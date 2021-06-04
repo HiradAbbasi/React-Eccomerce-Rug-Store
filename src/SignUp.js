@@ -25,7 +25,7 @@ const SignUp = (props) => {
     e.preventDefault();
 
     try {
-      await props.signUp(input.email, input.password);
+      await props.signUp(input.email, input.password, input.firstName);
       history.push("/dashboard");
     } catch(e) {
       console.log(e.message);

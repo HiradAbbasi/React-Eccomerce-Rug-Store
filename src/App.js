@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { auth } from "./firebase";
+import { db, auth } from "./firebase";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
 import Dashboard from "./Dashboard";
@@ -22,8 +22,15 @@ const App = () => {
     return auth.signInWithEmailAndPassword(email, password);
   }
 
-  const signUp = (email, password) => {
-    return auth.createUserWithEmailAndPassword(email, password);
+  const signUp = (email, password, firstName) => {
+    return auth.createUserWithEmailAndPassword(email, password).then(cred => {
+      console.log(cred.user)
+    });
+    // auth.createUserWithEmailAndPassword(email, password).then(cred => {
+    //   return firebase.database().collection('users').doc(cred.user.uid).set({
+    //     firstName: firstName
+    //   })
+    // })
   }
 
   const logout = () => {
