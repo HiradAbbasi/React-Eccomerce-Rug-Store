@@ -12,6 +12,13 @@ const App = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       setCurrentUser(user);
+      //                    .onSnapShot
+      db.collection('users').get().then(snapshot => {
+        snapshot.docs.forEach(doc => {
+          const user = doc.data();
+          console.log(user);
+        });
+      })
       setLoading(false);
     });
 
@@ -22,15 +29,17 @@ const App = () => {
     return auth.signInWithEmailAndPassword(email, password);
   }
 
-  const signUp = (email, password, firstName) => {
-    return auth.createUserWithEmailAndPassword(email, password).then(cred => {
-      console.log(cred.user)
-    });
-    // auth.createUserWithEmailAndPassword(email, password).then(cred => {
-    //   return firebase.database().collection('users').doc(cred.user.uid).set({
-    //     firstName: firstName
-    //   })
-    // })
+  const signUp = (userInfo) => {
+    auth.createUserWithEmailAndPassword(userInfo.email, userInfo.password).then(cred => {
+      return db.collection('users').doc(cred.user.uid).set({
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+        address: userInfo.address,
+        city: userInfo.city,
+        province: userInfo.province,
+        postalCode: userInfo.postalCode,
+      })
+    })
   }
 
   const logout = () => {

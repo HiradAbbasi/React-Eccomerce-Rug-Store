@@ -25,7 +25,7 @@ const SignUp = (props) => {
     e.preventDefault();
 
     try {
-      await props.signUp(input.email, input.password, input.firstName);
+      await props.signUp(input);
       history.push("/dashboard");
     } catch(e) {
       console.log(e.message);
@@ -39,7 +39,7 @@ const SignUp = (props) => {
   return (
     <div className="container right-panel-active">
       <div className="form-container sign-up-container">
-        <form onSubmit={signUp}>
+        <form className="form-create-account" onSubmit={signUp}>
           <h1 className="h1-fix">Create Account</h1><br/>
           <div className="form-row-content">
             <input className="row-two-items" type="text" name="firstName" placeholder="First Name" value={input.firstName} onChange={updateField}/>

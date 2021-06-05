@@ -33,10 +33,10 @@ const SignIn = (props) => {
   return (
     <div className="container left-panel-active">
       <div className="form-container sign-in-container">
-        <form onSubmit={signIn}>
+        <form className="form-create-account" onSubmit={signIn}>
           <h1 className="h1-fix">Sign In</h1><br/>
           <input type="email" name="email" placeholder="Email" value={input.email} onChange={updateField}/>
-          <input type="password" name="password" placeholder="Password" value={input.password} onChange={updateField}/>
+          <input type="password" name="password" placeholder="Password" value={input.password} onChange={updateField}/>          
           <a className="a-fix" href="#">Forgot Your Password</a>
           <button className="button-fix">Sign In</button>
         </form>

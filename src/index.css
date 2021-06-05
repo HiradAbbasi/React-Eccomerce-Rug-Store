@@ -68,7 +68,7 @@ input {
 	margin: 8px 0;
 }
 
-form {
+.form-create-account {
   display:flex;
   flex-direction: column;
   justify-content: center;
