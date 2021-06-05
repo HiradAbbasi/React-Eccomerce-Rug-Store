@@ -12,13 +12,6 @@ const App = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       setCurrentUser(user);
-      //                    .onSnapShot
-      db.collection('users').get().then(snapshot => {
-        snapshot.docs.forEach(doc => {
-          const user = doc.data();
-          console.log(user);
-        });
-      })
       setLoading(false);
     });
 

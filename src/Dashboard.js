@@ -4,10 +4,12 @@ import { db, auth } from "./firebase";
 
 const Dashboard = (props) => {
   const [input, setInput] = useState();
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [settingsUpdateErr, setSettingsUpdateErr] = useState(false);
 
   useEffect(() => {
     db.collection('users').doc(props.currentUser.uid).get().then(doc => {
-      setInput ({
+      setInput({
         firstName: doc.data().firstName,
         lastName: doc.data().lastName,
         address: doc.data().address,
@@ -17,30 +19,92 @@ const Dashboard = (props) => {
       })
     })
   }, []);
-  
+
   const updateField = (e) => {
+    console.log(props.currentUser);
+    setFormSubmitted(false);
     e.persist();
     setInput(prevInputs => ({...prevInputs, [e.target.name]: e.target.value }));
   }
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    db.collection('users').doc(props.currentUser.uid).set({
-      firstName: input.firstName,
-      lastName: input.lastName,
-      address: input.address,
-      city: input.city,
-      province: input.province,
-      postalCode: input.postalCode,
-    }).catch(err => {
-      console.log(err)
-    })
-    console.log("Updated Database")
+    if(Object.values(input).find(info => info == "") == undefined) {
+      setSettingsUpdateErr(false);
+      db.collection('users').doc(props.currentUser.uid).set({
+        firstName: input.firstName,
+        lastName: input.lastName,
+        address: input.address,
+        city: input.city,
+        province: input.province,
+        postalCode: input.postalCode,
+      }).catch(err => {
+        setSettingsUpdateErr(true);
+        console.log(err);
+      })
+    } else {
+      setSettingsUpdateErr(true);
+    }
 
+    setFormSubmitted(true);
+  }
+
+  const onResetPassword = () => {
+    //onReAuthenticateUser();
     auth.sendPasswordResetEmail(props.currentUser.email).then(function() {
       console.log('Email Sent Successfully');
     }).catch(function(error) {
+      setSettingsUpdateErr(true);
       console.log(error)
+    });
+  }
+
+  const onDeleteUser = () => {
+    //onReAuthenticateUser();
+    auth.currentUser.delete().then(function() {
+      console.log("User deleted");
+    }).catch(function(error) {
+      setSettingsUpdateErr(true);
+      console.log(error);
+    });
+  }
+
+  const onResetAccountSettings = () => {
+    db.collection('users').doc(props.currentUser.uid).get().then(doc => {
+      setInput({
+        firstName: doc.data().firstName,
+        lastName: doc.data().lastName,
+        address: doc.data().address,
+        city: doc.data().city,
+        province: doc.data().province,
+        postalCode: doc.data().postalCode,
+      })
+    })
+  }
+
+  // const onUpdateEmail = () => {
+  //   //onReAuthenticateUser();
+  //   auth.currentUser.updateEmail("hitadcas@gmail.com").then(function() {
+  //     console.log("Email updated succesfulyly")
+  //   }).catch(function(error) {
+  //     settingsUpdateErr(false);
+  //     console.log(error)
+  //   });
+  // }
+  
+  // const onReAuthenticateUser = () => {    
+  //   auth.currentUser.reauthenticateWithCredential(credential).then(function() {
+  //     // User re-authenticated.
+  //   }).catch(function(error) {
+  //     // An error happened.
+  //   });
+  // }
+
+  const onVerifiyUser  = () => {
+    auth.currentUser.sendEmailVerification().then(function() {
+      console.log("User verification email sent successfully");
+    }).catch(function(error) {
+      console.log(error);
     });
   }
 
@@ -102,8 +166,7 @@ const Dashboard = (props) => {
                   </a>
                 </div>
               </div>
-              <div className="tab-content p-4 p-md-5" id="v-pills-tabContent">
-                
+              <div className="tab-content p-4 p-md-5" id="v-pills-tabContent">                
                   <div className="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab" >
                     <h3 className="mb-4">Account Settings</h3>
                     <form className="form2" onSubmit={onSubmitHandler}>
@@ -113,17 +176,37 @@ const Dashboard = (props) => {
                             <label>First Name</label>
                             <input type="text" className="form-control" name="firstName" placeholder="First Name" value={input.firstName} onChange={updateField}/>
                           </div>
+                          {formSubmitted && (input.firstName.length === 0 &&
+                            <div class="alert alert-danger" role="alert">
+                              Invalid value (make sure input in not empty) 
+                            </div>)
+                          }
+                          {!formSubmitted && (input.firstName.length === 0 &&
+                            <div class="alert alert-warning" role="alert">
+                              Invalid value (make sure input in not empty) 
+                            </div>)
+                          }
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label>Last Name</label>
                             <input type="text" className="form-control" name="lastName" placeholder="Last Name" value={input.lastName} onChange={updateField}/>
                           </div>
+                          {formSubmitted && (input.lastName.length === 0 &&
+                            <div class="alert alert-danger" role="alert">
+                              Invalid value (make sure input in not empty) 
+                            </div>)
+                          }
+                          {!formSubmitted && (input.lastName.length === 0 &&
+                            <div class="alert alert-warning" role="alert">
+                              Invalid value (make sure input in not empty) 
+                            </div>)
+                          }
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label>Email</label>
-                            <input type="email" className="form-control" name="email" placeholder="Email" value={props.currentUser.email}/>
+                            <input disabled type="email" className="form-control" name="email" placeholder="Email" value={props.currentUser.email}/>
                           </div>
                         </div>
                         <div className="col-md-6">
@@ -131,37 +214,83 @@ const Dashboard = (props) => {
                             <label>Address</label>
                             <input type="text" className="form-control" name="address" placeholder="Address" value={input.address} onChange={updateField}/>
                           </div>
+                          {formSubmitted && (input.address.length === 0 &&
+                            <div class="alert alert-danger" role="alert">
+                              Invalid value (make sure input in not empty) 
+                            </div>)
+                          }
+                          {!formSubmitted && (input.address.length === 0 &&
+                            <div class="alert alert-warning" role="alert">
+                              Invalid value (make sure input in not empty) 
+                            </div>)
+                          }
                         </div>
                         <div className="col-md-4">
                           <div className="form-group">
                             <label>City</label>
                             <input type="text" className="form-control" name="city" placeholder="City" value={input.city} onChange={updateField}/>
                           </div>
+                          {formSubmitted && (input.city.length === 0 &&
+                            <div class="alert alert-danger" role="alert">
+                              Invalid value (make sure input in not empty) 
+                            </div>)
+                          }
+                          {!formSubmitted && (input.city.length === 0 &&
+                            <div class="alert alert-warning" role="alert">
+                              Invalid value (make sure input in not empty) 
+                            </div>)
+                          }
                         </div>
                         <div className="col-md-4">
                           <div className="form-group">
                             <label>Province</label>
                             <input type="text" className="form-control" name="province" placeholder="Province" value={input.province} onChange={updateField}/>
                           </div>
+                          {formSubmitted && (input.province.length === 0 &&
+                            <div class="alert alert-danger" role="alert">
+                              Invalid value (make sure input in not empty) 
+                            </div>)
+                          }
+                          {!formSubmitted && (input.province.length === 0 &&
+                            <div class="alert alert-warning" role="alert">
+                              Invalid value (make sure input in not empty) 
+                            </div>)
+                          }
                         </div>
                         <div className="col-md-4">
                           <div className="form-group">
                             <label>Postal Code</label>
                             <input type="text" className="form-control" name="postalCode" placeholder="Postal Code" value={input.postalCode} onChange={updateField}/>
                           </div>
-                        </div>
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <label>Bio</label>
-                            <textarea className="form-control" rows="2">
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                            </textarea>
-                          </div>
+                          {formSubmitted && (input.postalCode.length === 0 &&
+                            <div class="alert alert-danger" role="alert">
+                              Invalid value (make sure input in not empty) 
+                            </div>)
+                          }
+                          {!formSubmitted && (input.postalCode.length === 0 &&
+                            <div class="alert alert-warning" role="alert">
+                              Invalid value (make sure input in not empty) 
+                            </div>)
+                          }
                         </div>
                       </div>
-                      <div>
-                        <button className="btn btn-primary">Update</button>
-                        <button className="btn btn-light">Cancel</button>
+                      {formSubmitted && (settingsUpdateErr ? 
+                        <div class="alert alert-danger" role="alert"> 
+                          <h5 class="alert-heading">Update Unsuccessful</h5> 
+                          <p className="mb-0">Unable to update account settings</p> 
+                        </div> :
+                        <div class="alert alert-success" role="alert"> 
+                          <h5 class="alert-heading">Update Successful</h5> 
+                          <p className="mb-0">Account Settings Updated Successfully</p> 
+                        </div>)
+                      }   
+                      <div className="mb-2">
+                        <button className="btn btn-primary mr-3" type="submit">Update</button>
+                        <button className="btn btn-light" type="button" onClick={onResetAccountSettings}>Cancel</button>
+                      </div>
+                      <div className="mb-0">
+                        <button type="button" class="btn btn-outline-info mr-3" type="button" onClick={onVerifiyUser}>Verify Email</button>
+                        <button type="button" class="btn btn-outline-danger" type="button" onClick={onDeleteUser}>Delete Account</button>
                       </div>
                     </form>
                   </div>
