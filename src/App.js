@@ -29,7 +29,7 @@ const App = () => {
         lastName: userInfo.lastName,
         address: userInfo.address,
         city: userInfo.city,
-        province: userInfo.province,
+        state: userInfo.state,
         postalCode: userInfo.postalCode,
       })
     })
@@ -43,7 +43,6 @@ const App = () => {
     <>
       {!loading && 
         <>
-          <button onClick={logout}>Logout</button>
           <Switch>
             <Route exact path="/">
               {currentUser ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
@@ -55,7 +54,8 @@ const App = () => {
               {currentUser ? <Redirect to="/dashboard" /> : <SignUp signUp={signUp} />}
             </Route>
             <Route path="/dashboard">
-              {currentUser ? <Dashboard currentUser={currentUser} /> : <Redirect to="/sign-in" />}
+              <button onClick={logout}>Logout</button>
+              {currentUser ? <Dashboard currentUser={currentUser} /> : <Redirect to="/sign-in"/>}
             </Route>
             {/* <Route path="/search">
               <Search search={search} toggleFavorite={toggleFavorite} searchedShows={searchedShows} />

@@ -1,6 +1,4 @@
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+import firebase from "firebase";
 //we dont want to import everything, so we only import what we are planning on using here
 //in this case, auth and firestore
 //import firebase from 'firebase';
@@ -16,7 +14,7 @@ const app = firebase.initializeApp({
 const db = app.firestore();
 const auth = app.auth();
 
-export {auth, db};
+export {auth, db, firebase};
 
 
 

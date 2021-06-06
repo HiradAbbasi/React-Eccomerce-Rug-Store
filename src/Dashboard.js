@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import AddressInput from "./AddressInput";
+import { db, auth, firebase } from "./firebase";
 import "../src/Dashboard.css";
-import { db, auth } from "./firebase";
 
 const Dashboard = (props) => {
   const [input, setInput] = useState();
@@ -14,14 +15,13 @@ const Dashboard = (props) => {
         lastName: doc.data().lastName,
         address: doc.data().address,
         city: doc.data().city,
-        province: doc.data().province,
+        state: doc.data().state,
         postalCode: doc.data().postalCode,
       })
     })
   }, []);
 
   const updateField = (e) => {
-    console.log(props.currentUser);
     setFormSubmitted(false);
     e.persist();
     setInput(prevInputs => ({...prevInputs, [e.target.name]: e.target.value }));
@@ -36,7 +36,7 @@ const Dashboard = (props) => {
         lastName: input.lastName,
         address: input.address,
         city: input.city,
-        province: input.province,
+        state: input.state,
         postalCode: input.postalCode,
       }).catch(err => {
         setSettingsUpdateErr(true);
@@ -59,6 +59,29 @@ const Dashboard = (props) => {
     });
   }
 
+  const onNewPassword = (e) => {
+    e.preventDefault();
+    try {
+      onReAuthenticateUser(input.password).then(function() {
+        if(input.newPassword === input.confirmPassword){
+          auth.currentUser.updatePassword(input.newPassword).then(function() {
+            console.log('New password set successfully');  
+          }).catch(function(error) {
+            console.log(error.message);  
+          });
+        } else {
+          console.log("Passwords do not match or user is not authenticated")
+        }
+      });
+    } catch (e) {
+      console.log(e.message);
+    }
+
+    setInput(prevInputs => ({...prevInputs, ['password'] : '' }));
+    setInput(prevInputs => ({...prevInputs, ['newPassword'] : '' }));
+    setInput(prevInputs => ({...prevInputs, ['confirmPassword'] : '' }));
+  }
+
   const onDeleteUser = () => {
     //onReAuthenticateUser();
     auth.currentUser.delete().then(function() {
@@ -76,36 +99,50 @@ const Dashboard = (props) => {
         lastName: doc.data().lastName,
         address: doc.data().address,
         city: doc.data().city,
-        province: doc.data().province,
+        state: doc.data().state,
         postalCode: doc.data().postalCode,
       })
     })
   }
 
-  // const onUpdateEmail = () => {
-  //   //onReAuthenticateUser();
-  //   auth.currentUser.updateEmail("hitadcas@gmail.com").then(function() {
-  //     console.log("Email updated succesfulyly")
-  //   }).catch(function(error) {
-  //     settingsUpdateErr(false);
-  //     console.log(error)
-  //   });
-  // }
+  const onUpdateEmail = (e) => {
+    e.preventDefault();
+    onReAuthenticateUser(input.password).then(function() {
+      auth.currentUser.updateEmail(input.newEmail).then(function() {
+        console.log("Email updated succesfulyly")
+      }).catch(function(error) {
+        // settingsUpdateErr(false);
+        console.log(error)
+      });
+    });
+    setInput(prevInputs => ({...prevInputs, ['password'] : '' }));
+  }
   
-  // const onReAuthenticateUser = () => {    
-  //   auth.currentUser.reauthenticateWithCredential(credential).then(function() {
-  //     // User re-authenticated.
-  //   }).catch(function(error) {
-  //     // An error happened.
-  //   });
-  // }
+  const onReAuthenticateUser = (password) => {    
+    const user = auth.currentUser;
+    const credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
+
+    return user.reauthenticateWithCredential(credential).then(function() {
+      console.log("User authenticated");
+    }).catch(function(error) {
+      console.log(error);
+    });
+  }
 
   const onVerifiyUser  = () => {
     auth.currentUser.sendEmailVerification().then(function() {
       console.log("User verification email sent successfully");
+      console.log(auth.currentUser.emailVerified);
     }).catch(function(error) {
       console.log(error);
     });
+  }  
+
+  const onSelectInfo = (postalCode, city, state, address) => {
+    setInput(prevInputs => ({...prevInputs, ['address'] : address }));
+    setInput(prevInputs => ({...prevInputs, ['postalCode'] : postalCode }));
+    setInput(prevInputs => ({...prevInputs, ['city'] : city }));
+    setInput(prevInputs => ({...prevInputs, ['state'] : state }));
   }
 
   return (
@@ -117,7 +154,7 @@ const Dashboard = (props) => {
             <div className="bg-white shadow rounded-lg d-block d-sm-flex">
               <div className="profile-tab-nav border-right">
                 <div className="p-4">
-                  <h4 className="text-center">{input.firstName + " " +input.lastName}</h4>
+                  <h4 className="text-center">{input.firstName + " " + input.lastName}</h4>
                 </div>
                 <div className="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                   <a className="nav-link active" id="account-tab" data-toggle="pill" href="#account" role="tab" aria-controls="account" aria-selected="true" >
@@ -138,7 +175,7 @@ const Dashboard = (props) => {
                     aria-selected="false"
                   >
                     <i className="fa fa-user text-center mr-1"></i>
-                    Security
+                    Email
                   </a>
                   <a
                     className="nav-link"
@@ -169,7 +206,7 @@ const Dashboard = (props) => {
               <div className="tab-content p-4 p-md-5" id="v-pills-tabContent">                
                   <div className="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab" >
                     <h3 className="mb-4">Account Settings</h3>
-                    <form className="form2" onSubmit={onSubmitHandler}>
+                    <form onSubmit={onSubmitHandler}>
                       <div className="row">
                         <div className="col-md-6">
                           <div className="form-group">
@@ -177,12 +214,12 @@ const Dashboard = (props) => {
                             <input type="text" className="form-control" name="firstName" placeholder="First Name" value={input.firstName} onChange={updateField}/>
                           </div>
                           {formSubmitted && (input.firstName.length === 0 &&
-                            <div class="alert alert-danger" role="alert">
+                            <div className="alert alert-danger" role="alert">
                               Invalid value (make sure input in not empty) 
                             </div>)
                           }
                           {!formSubmitted && (input.firstName.length === 0 &&
-                            <div class="alert alert-warning" role="alert">
+                            <div className="alert alert-warning" role="alert">
                               Invalid value (make sure input in not empty) 
                             </div>)
                           }
@@ -193,12 +230,12 @@ const Dashboard = (props) => {
                             <input type="text" className="form-control" name="lastName" placeholder="Last Name" value={input.lastName} onChange={updateField}/>
                           </div>
                           {formSubmitted && (input.lastName.length === 0 &&
-                            <div class="alert alert-danger" role="alert">
+                            <div className="alert alert-danger" role="alert">
                               Invalid value (make sure input in not empty) 
                             </div>)
                           }
                           {!formSubmitted && (input.lastName.length === 0 &&
-                            <div class="alert alert-warning" role="alert">
+                            <div className="alert alert-warning" role="alert">
                               Invalid value (make sure input in not empty) 
                             </div>)
                           }
@@ -212,15 +249,17 @@ const Dashboard = (props) => {
                         <div className="col-md-6">
                           <div className="form-group">
                             <label>Address</label>
-                            <input type="text" className="form-control" name="address" placeholder="Address" value={input.address} onChange={updateField}/>
+                            {<AddressInput address={input.address} onSelectInfo={onSelectInfo} />}
+                            {/* <input id="row-item-big" type="text" className="form-control" name="address" placeholder="Address" value={input.address}  onChange={updateField} list="somethingelse"/> */}
+                            <datalist id="somethingelse"></datalist>
                           </div>
                           {formSubmitted && (input.address.length === 0 &&
-                            <div class="alert alert-danger" role="alert">
+                            <div className="alert alert-danger" role="alert">
                               Invalid value (make sure input in not empty) 
                             </div>)
                           }
                           {!formSubmitted && (input.address.length === 0 &&
-                            <div class="alert alert-warning" role="alert">
+                            <div className="alert alert-warning" role="alert">
                               Invalid value (make sure input in not empty) 
                             </div>)
                           }
@@ -228,31 +267,31 @@ const Dashboard = (props) => {
                         <div className="col-md-4">
                           <div className="form-group">
                             <label>City</label>
-                            <input type="text" className="form-control" name="city" placeholder="City" value={input.city} onChange={updateField}/>
+                            <input disabled type="text" className="form-control" name="city" placeholder="City" value={input.city} onChange={updateField}/>
                           </div>
                           {formSubmitted && (input.city.length === 0 &&
-                            <div class="alert alert-danger" role="alert">
+                            <div className="alert alert-danger" role="alert">
                               Invalid value (make sure input in not empty) 
                             </div>)
                           }
                           {!formSubmitted && (input.city.length === 0 &&
-                            <div class="alert alert-warning" role="alert">
+                            <div className="alert alert-warning" role="alert">
                               Invalid value (make sure input in not empty) 
                             </div>)
                           }
                         </div>
                         <div className="col-md-4">
                           <div className="form-group">
-                            <label>Province</label>
-                            <input type="text" className="form-control" name="province" placeholder="Province" value={input.province} onChange={updateField}/>
+                            <label>State/Province</label>
+                            <input disabled type="text" className="form-control" name="state" placeholder="State/Province" value={input.state} onChange={updateField}/>
                           </div>
-                          {formSubmitted && (input.province.length === 0 &&
-                            <div class="alert alert-danger" role="alert">
+                          {formSubmitted && (input.state.length === 0 &&
+                            <div className="alert alert-danger" role="alert">
                               Invalid value (make sure input in not empty) 
                             </div>)
                           }
-                          {!formSubmitted && (input.province.length === 0 &&
-                            <div class="alert alert-warning" role="alert">
+                          {!formSubmitted && (input.state.length === 0 &&
+                            <div className="alert alert-warning" role="alert">
                               Invalid value (make sure input in not empty) 
                             </div>)
                           }
@@ -260,104 +299,116 @@ const Dashboard = (props) => {
                         <div className="col-md-4">
                           <div className="form-group">
                             <label>Postal Code</label>
-                            <input type="text" className="form-control" name="postalCode" placeholder="Postal Code" value={input.postalCode} onChange={updateField}/>
+                            <input disabled type="text" className="form-control" name="postalCode" placeholder="Postal Code" value={input.postalCode} onChange={updateField}/>
                           </div>
                           {formSubmitted && (input.postalCode.length === 0 &&
-                            <div class="alert alert-danger" role="alert">
+                            <div className="alert alert-danger" role="alert">
                               Invalid value (make sure input in not empty) 
                             </div>)
                           }
                           {!formSubmitted && (input.postalCode.length === 0 &&
-                            <div class="alert alert-warning" role="alert">
+                            <div className="alert alert-warning" role="alert">
                               Invalid value (make sure input in not empty) 
                             </div>)
                           }
                         </div>
                       </div>
                       {formSubmitted && (settingsUpdateErr ? 
-                        <div class="alert alert-danger" role="alert"> 
-                          <h5 class="alert-heading">Update Unsuccessful</h5> 
+                        <div className="alert alert-danger" role="alert"> 
+                          <h5 className="alert-heading">Update Unsuccessful</h5> 
                           <p className="mb-0">Unable to update account settings</p> 
                         </div> :
-                        <div class="alert alert-success" role="alert"> 
-                          <h5 class="alert-heading">Update Successful</h5> 
+                        <div className="alert alert-success" role="alert"> 
+                          <h5 className="alert-heading">Update Successful</h5> 
                           <p className="mb-0">Account Settings Updated Successfully</p> 
                         </div>)
                       }   
                       <div className="mb-2">
-                        <button className="btn btn-primary mr-3" type="submit">Update</button>
-                        <button className="btn btn-light" type="button" onClick={onResetAccountSettings}>Cancel</button>
+                        <button className="btn btn-primary mr-1" type="submit">Update</button>
+                        <button className="btn btn-secondary" type="button" onClick={onResetAccountSettings}>Cancel</button>
                       </div>
                       <div className="mb-0">
-                        <button type="button" class="btn btn-outline-info mr-3" type="button" onClick={onVerifiyUser}>Verify Email</button>
-                        <button type="button" class="btn btn-outline-danger" type="button" onClick={onDeleteUser}>Delete Account</button>
+                        <button type="button" className="btn btn-outline-info mr-1" type="button" onClick={onVerifiyUser}>Verify Email</button>
+                        <button type="button" className="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModalCenter">Delete Account</button>
                       </div>
                     </form>
                   </div>
                 <div className="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
                   <h3 className="mb-4">Password Settings</h3>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Old password</label>
-                        <input type="password" className="form-control" name="password" placeholder="Password"/>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>New password</label>
-                        <input type="password" className="form-control" name="newPassword" placeholder="New Password"/>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Confirm new password</label>
-                        <input type="password" className="form-control" />
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <button className="btn btn-primary">Update</button>
-                    <button className="btn btn-light">Cancel</button>
-                  </div>
-                </div>
-                <div className="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
-                  <h3 className="mb-4">Security Settings</h3>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Login</label>
-                        <input type="text" className="form-control" />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Two-factor auth</label>
-                        <input type="text" className="form-control" />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <div className="form-check">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="recovery"
-                          />
-                          <label className="form-check-label">
-                            Recovery
-                          </label>
+                  <form onSubmit={onNewPassword}>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>Old password</label>
+                          <input required type="password" className="form-control" name="password" placeholder="Password" value={input.password} onChange={updateField}/>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div>
-                    <button className="btn btn-primary">Update</button>
-                    <button className="btn btn-light">Cancel</button>
-                  </div>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>New password</label>
+                          <input required type="password" className="form-control" name="newPassword" placeholder="New Password" value={input.newPassword} onChange={updateField}/>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>Confirm new password</label>
+                          <input required type="password" className="form-control" name="confirmPassword" placeholder="Confirm Password"value={input.confirmPassword} onChange={updateField} />
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <button className="btn btn-primary" type="submit">Update</button>
+                      <button className="btn btn-light" type="button" onClick={onUpdateEmail}>Cancel</button>
+                    </div>
+                  </form>
+                </div>
+                <div className="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                  <h3 className="mb-4">Security Settings</h3>
+                  <form onSubmit={onUpdateEmail}>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>Password</label>
+                          <input required type="password" className="form-control" name="password" placeholder="Password" value={input.password} onChange={updateField}/>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>Current Email</label>
+                          <input disabled type="email" className="form-control" value={props.currentUser.email}/>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>New Email</label>
+                          <input required type="email" className="form-control" name="newEmail" value={input.newEmail} onChange={updateField}/>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <div className="form-check">
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="recovery"
+                            />
+                            <label className="form-check-label">
+                              Recovery
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <button className="btn btn-primary" type="submit">Update</button>
+                      <button className="btn btn-light" type="button">Cancel</button>
+                    </div>
+                  </form>
                 </div>
                 <div className="tab-pane fade" id="application" role="tabpanel" aria-labelledby="application-tab" >
                   <h3 className="mb-4">Application Settings</h3>
@@ -443,6 +494,29 @@ const Dashboard = (props) => {
                     <button className="btn btn-primary">Update</button>
                     <button className="btn btn-light">Cancel</button>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* HTML for modal  */}
+          <div className="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div className="modal-dialog modal-dialog-centered" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  Are you sure you would like to delete this account permanently. 
+                  Your account will be fully removed from our database, 30 days 
+                  after selecting this option. You will NOT be able to retrieve
+                  any information after that time.
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-outline-danger" data-dismiss="modal" type="button" onClick={onDeleteUser}>Delete Account</button>
+                  <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
               </div>
             </div>

@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import AddressInput from "./AddressInput";
 
 const SignUp = (props) => {
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [settingsUpdateErr, setSettingsUpdateErr] = useState(false);
+
   const history = useHistory();
   const inputs = {
     firstName: "",
     lastName: "",
     address: "",
     city: "",
-    province: "",
+    state: "",
     postalCode: "",
     email: "",
     password: "",
@@ -23,12 +27,13 @@ const SignUp = (props) => {
 
   const signUp = async (e) => {
     e.preventDefault();
+    setFormSubmitted(true);
 
     try {
       await props.signUp(input);
-      history.push("/dashboard");
     } catch(e) {
-      console.log(e.message);
+      console.log(e);
+      //setSettingsUpdateErr(true);
     }
   }
 
@@ -36,40 +41,99 @@ const SignUp = (props) => {
     history.push('/sign-in');
   }
 
+  const onSelectInfo = (postalCode, city, state, address) => {
+    setInput(prevInputs => ({...prevInputs, ['address'] : address }));
+    setInput(prevInputs => ({...prevInputs, ['postalCode'] : postalCode }));
+    setInput(prevInputs => ({...prevInputs, ['city'] : city }));
+    setInput(prevInputs => ({...prevInputs, ['state'] : state }));
+  }
+
   return (
-    <div className="container right-panel-active">
-      <div className="form-container sign-up-container">
-        <form className="form-create-account" onSubmit={signUp}>
-          <h1 className="h1-fix">Create Account</h1><br/>
-          <div className="form-row-content">
-            <input className="row-two-items" type="text" name="firstName" placeholder="First Name" value={input.firstName} onChange={updateField}/>
-            <input className="row-two-items" type="text" name="lastName" placeholder="Last Name" value={input.lastName} onChange={updateField}/>
-          </div>
-          <input type="email" name="email" placeholder="Email" value={input.email} onChange={updateField}/>
-          <div className="form-row-content">
-            <input id="row-item-big" type="text" name="address" placeholder="Address" value={input.address} onChange={updateField}/>
-            <input id="row-item-small" type="text" name="postalCode" placeholder="Postal Code" value={input.postalCode} onChange={updateField}/>
-          </div>
-          <div className="form-row-content">
-            <input className="row-two-items" type="text" name="city" placeholder="City" value={input.city} onChange={updateField}/>
-            <input className="row-two-items" type="text" name="province" placeholder="Province" value={input.province} onChange={updateField}/>
-          </div>
-          <input type="password" name="password" placeholder="Password" value={input.password} onChange={updateField}/>
-          <input type="password" name="confirmPassword" placeholder="Confirm Password" value={input.confirmPassword} onChange={updateField}/><br/>
-          <button className="button-fix">SignUp</button>
-        </form>
+    <section className="signIn-signUp-container">
+      <div className="left-container">
+        <div className="random-message-center">
+          <h1>Welcome Back!</h1>
+          <p>To keep connected with us please login with your personal info</p>
+          <button onClick={redirectToSignIn}>Sign In</button>
+        </div>  
       </div>
-      <div className="overlay-container">
-        <div className="overlay">
-          <div className="overlay-panel overlay-left">
-            <h1 className="h1-fix">Welcome Back!</h1>
-            <p className="p-fix">To keep connected with us please login with your personal info</p>
-            <button className="ghost button-fix" id="signIn" onClick={redirectToSignIn}>Sign In</button>
-          </div>    
+      <div className="right-container">
+        <div className="form-container">
+          <h1>Create Account</h1><br/>
+          <form>
+            <div className="form-row">
+              <div className="form-group col-md-6 mb-3">
+                <label>First Name</label>
+                <input type="text" className="form-control" name="firstName" placeholder="First Name" value={input.firstName} onChange={updateField}/>
+                <div className="alert alert-warning mt-2 mb-0" role="alert">ERROR MESSAGE GOES HERE</div>
+              </div>
+              <div className="form-group col-md-6 mb-3">
+                <label>Last Name</label>
+                <input type="text" className="form-control" name="lastName" placeholder="Last Name" value={input.lastName} onChange={updateField}/>
+                <div className="alert alert-warning mt-2 mb-0" role="alert">ERROR MESSAGE GOES HERE</div>
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-group col-md-8 mb-3">
+                <label>Address</label>
+                {<AddressInput onSelectInfo={onSelectInfo} />}
+                <div className="alert alert-warning mt-2 mb-0" role="alert">ERROR MESSAGE GOES HERE</div>
+              </div>
+              <div className="form-group col-md-4 mb-3">
+                <label>Postal Code</label>
+                <input disabled type="text" className="form-control" name="postalCode" placeholder="Code" value={input.postalCode} onChange={updateField}/>
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-group col-md-6 mb-3">
+                <label>City</label>
+                <input disabled type="text" className="form-control" name="city" placeholder="City" value={input.city} onChange={updateField}/>
+              </div>
+              <div className="form-group col-md-6 mb-3">
+                <label>State</label>
+                <input disabled type="text" className="form-control" name="state" placeholder="State/Province" value={input.state} onChange={updateField}/>
+              </div>
+            </div>
+            <div className="form-group">
+              <label>Email</label>
+              <input type="email" className="form-control" name="email" placeholder="Email" value={input.email} onChange={updateField}/>
+              <div className="alert alert-warning mt-2 mb-0" role="alert">ERROR MESSAGE GOES HERE</div>
+            </div>
+            <div className="form-row">
+              <div className="form-group col-md-6 mb-3">
+                <label>Password</label>
+                <input type="password" className="form-control" name="password" placeholder="Password" value={input.password} onChange={updateField}/>
+                <div className="alert alert-warning mt-2 mb-0" role="alert">ERROR MESSAGE GOES HERE</div>
+              </div>
+              <div className="form-group col-md-6 mb-4">
+                <label>Confirm Password</label>
+                <input type="password" className="form-control" name="confirmPassword" placeholder="Confirm Password" value={input.confirmPassword} onChange={updateField}/>
+                <div className="alert alert-warning mt-2 mb-0" role="alert">ERROR MESSAGE GOES HERE</div>
+              </div>
+            </div>
+            {/* <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gridCheck"/>
+                <label class="form-check-label" for="gridCheck">Check me out</label>
+              </div>
+            </div> */}
+            {/* {formSubmitted && (settingsUpdateErr ? 
+              <div className="alert alert-danger" role="alert"> 
+                <h5 className="alert-heading">Update Unsuccessful</h5> 
+                <p className="mb-0">Unable to update account settings</p> 
+              </div> :
+              <div className="alert alert-success" role="alert"> 
+                <h5 className="alert-heading">Update Successful</h5> 
+                <p className="mb-0">Account Settings Updated Successfully</p> 
+              </div>)
+            }    */}
+            <button type="submit" className="btn btn-danger btn-lg btn-block" onClick={signUp}>SIGN UP</button>
+          </form>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
 export default SignUp;
+
