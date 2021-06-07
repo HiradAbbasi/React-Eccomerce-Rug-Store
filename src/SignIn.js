@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { firebase } from "./firebase";
+import { db, auth, firebase } from "./firebase";
 
 const SignIn = (props) => {
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const [settingsUpdateErr, setSettingsUpdateErr] = useState(false);
   const [errMessage, setErrMessage] = useState('');
   const history = useHistory();
   const inputs = {
@@ -31,6 +30,16 @@ const SignIn = (props) => {
 
   const redirectToSignUp = () => {
     history.push('/sign-up');
+  }
+
+  const onForgotPassword = () => {
+    auth.sendPasswordResetEmail(input.email).then(function() {
+      console.log('Email Sent Successfully');
+      setErrMessage('');
+    }).catch(function(error) {
+      setFormSubmitted(true);
+      setErrMessage(error.message);
+    });
   }
 
   const signInWithGoogle = () => {
@@ -67,16 +76,21 @@ const SignIn = (props) => {
               <label>Email address</label>
               <input type="email" className="form-control" name="email" placeholder="Enter email" value={input.email} onChange={updateField}/>
             </div>
-            <div className="form-group">
+            <div className="form-group mb-2">
               <label>Password</label>
               <input type="password" className="form-control" name="password" placeholder="Password" value={input.password} onChange={updateField}/>
             </div>
+            <button type="button" class="btn btn-link pl-0" onClick={onForgotPassword}>Forgot password?</button>  
             {formSubmitted && (errMessage.length > 0 ?
               <div className="alert alert-danger" role="alert"> 
                 <h5 className="alert-heading">Sign In Failed</h5> 
                 <p className="mb-0">{errMessage}</p> 
-              </div> : '')}   
-            <button type="submit" className="btn btn-danger btn-lg btn-block" onClick={signIn}>SIGN IN</button>
+              </div> : 
+              <div className="alert alert-success" role="alert"> 
+                <h5 className="alert-heading">Email Sent Successfully</h5> 
+                {/* <p className="mb-0">{errMessage}</p>  */}
+              </div>)}   
+            <button type="submit" className="btn btn-primary btn-lg btn-block" onClick={signIn}>SIGN IN</button>
           </form>
         </div>
       </div>

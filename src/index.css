@@ -5,21 +5,24 @@
 }
 
 body {
-	background: #f6f5f7;
 	font-family: 'Montserrat', sans-serif;
-	height: 100vh;
 }
 
 .signIn-signUp-container {
-  height: 100vh;
+  margin: 0 auto;
+  height: 75vh;
+  max-height: 800px;
+  max-width:1300px;
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-bottom: 150px;
 }
 
 .left-container {
-  background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
-	background: linear-gradient(to right, #FF4B2B, #FF416C);
+  border-radius: 5px;
+  background: -webkit-linear-gradient(to right, #0e8ce4, #0e8ce4);
+	background: linear-gradient(to right, #0e8ce4, #104d79);
   width: 100%;
   display: flex;
   justify-content: center;
@@ -31,7 +34,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: whitesmoke;
   width: 100%;
 }
 
@@ -56,9 +58,8 @@ body {
 .random-message-center button {
 	border-radius: 20px;
 	border: 1px solid white;
-	background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
-	background: linear-gradient(to right, #FF4B2B, #FF416C);
-	color: #FFFFFF;
+  background: whitesmoke;
+	color: #0e8ce4;
 	font-size: 12px;
 	font-weight: bold;
 	padding: 12px 45px;

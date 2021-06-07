@@ -60,55 +60,55 @@ const SignUp = (props) => {
       <div className="right-container">
         <div className="form-container">
           <h1>Create Account</h1><br/>
-          <form>
+          <form onSubmit={signUp}>
             <div className="form-row">
               <div className="form-group col-md-6 mb-3">
                 <label>First Name</label>
-                <input type="text" className="form-control" name="firstName" placeholder="First Name" value={input.firstName} onChange={updateField}/>
-                <div className="alert alert-warning mt-2 mb-0" role="alert">ERROR MESSAGE GOES HERE</div>
+                <input required type="text" className="form-control" name="firstName" placeholder="First Name" value={input.firstName} onChange={updateField}/>
+                {/* <div className="alert alert-warning mt-2 mb-0" role="alert">ERROR MESSAGE GOES HERE</div> */}
               </div>
               <div className="form-group col-md-6 mb-3">
                 <label>Last Name</label>
-                <input type="text" className="form-control" name="lastName" placeholder="Last Name" value={input.lastName} onChange={updateField}/>
-                <div className="alert alert-warning mt-2 mb-0" role="alert">ERROR MESSAGE GOES HERE</div>
+                <input required type="text" className="form-control" name="lastName" placeholder="Last Name" value={input.lastName} onChange={updateField}/>
+                {/* <div className="alert alert-warning mt-2 mb-0" role="alert">ERROR MESSAGE GOES HERE</div> */}
               </div>
             </div>
             <div className="form-row">
               <div className="form-group col-md-8 mb-3">
                 <label>Address</label>
                 {<AddressInput onSelectInfo={onSelectInfo} />}
-                <div className="alert alert-warning mt-2 mb-0" role="alert">ERROR MESSAGE GOES HERE</div>
+                {/* <div className="alert alert-warning mt-2 mb-0" role="alert">ERROR MESSAGE GOES HERE</div> */}
               </div>
               <div className="form-group col-md-4 mb-3">
                 <label>Postal Code</label>
-                <input disabled type="text" className="form-control" name="postalCode" placeholder="Code" value={input.postalCode} onChange={updateField}/>
+                <input required disabled type="text" className="form-control" name="postalCode" placeholder="Code" value={input.postalCode} onChange={updateField}/>
               </div>
             </div>
             <div className="form-row">
               <div className="form-group col-md-6 mb-3">
                 <label>City</label>
-                <input disabled type="text" className="form-control" name="city" placeholder="City" value={input.city} onChange={updateField}/>
+                <input required disabled type="text" className="form-control" name="city" placeholder="City" value={input.city} onChange={updateField}/>
               </div>
               <div className="form-group col-md-6 mb-3">
                 <label>State</label>
-                <input disabled type="text" className="form-control" name="state" placeholder="State/Province" value={input.state} onChange={updateField}/>
+                <input required disabled type="text" className="form-control" name="state" placeholder="State/Province" value={input.state} onChange={updateField}/>
               </div>
             </div>
             <div className="form-group">
               <label>Email</label>
-              <input type="email" className="form-control" name="email" placeholder="Email" value={input.email} onChange={updateField}/>
-              <div className="alert alert-warning mt-2 mb-0" role="alert">ERROR MESSAGE GOES HERE</div>
+              <input required type="email" className="form-control" name="email" placeholder="Email" value={input.email} onChange={updateField}/>
+              {/* <div className="alert alert-warning mt-2 mb-0" role="alert">ERROR MESSAGE GOES HERE</div> */}
             </div>
             <div className="form-row">
               <div className="form-group col-md-6 mb-3">
                 <label>Password</label>
-                <input type="password" className="form-control" name="password" placeholder="Password" value={input.password} onChange={updateField}/>
-                <div className="alert alert-warning mt-2 mb-0" role="alert">ERROR MESSAGE GOES HERE</div>
+                <input required type="password" className="form-control" name="password" placeholder="Password" value={input.password} onChange={updateField}/>
+                {/* <div className="alert alert-warning mt-2 mb-0" role="alert">ERROR MESSAGE GOES HERE</div> */}
               </div>
               <div className="form-group col-md-6 mb-4">
                 <label>Confirm Password</label>
-                <input type="password" className="form-control" name="confirmPassword" placeholder="Confirm Password" value={input.confirmPassword} onChange={updateField}/>
-                <div className="alert alert-warning mt-2 mb-0" role="alert">ERROR MESSAGE GOES HERE</div>
+                <input required type="password" className="form-control" name="confirmPassword" placeholder="Confirm Password" value={input.confirmPassword} onChange={updateField}/>
+                {/* <div className="alert alert-warning mt-2 mb-0" role="alert">ERROR MESSAGE GOES HERE</div> */}
               </div>
             </div>
             {/* <div class="form-group">
@@ -127,7 +127,7 @@ const SignUp = (props) => {
                 <p className="mb-0">Account Settings Updated Successfully</p> 
               </div>)
             }    */}
-            <button type="submit" className="btn btn-danger btn-lg btn-block" onClick={signUp}>SIGN UP</button>
+            <button type="submit" className="btn btn-primary btn-lg btn-block">SIGN UP</button>
           </form>
         </div>
       </div>

@@ -109,6 +109,7 @@ const Dashboard = (props) => {
     e.preventDefault();
     onReAuthenticateUser(input.password).then(function() {
       auth.currentUser.updateEmail(input.newEmail).then(function() {
+        setInput(prevInputs => ({...prevInputs, ['email'] : auth.currentUser.email }));
         console.log("Email updated succesfulyly")
       }).catch(function(error) {
         // settingsUpdateErr(false);
@@ -116,6 +117,7 @@ const Dashboard = (props) => {
       });
     });
     setInput(prevInputs => ({...prevInputs, ['password'] : '' }));
+    setInput(prevInputs => ({...prevInputs, ['newEmail'] : '' }));
   }
   
   const onReAuthenticateUser = (password) => {    
@@ -148,8 +150,8 @@ const Dashboard = (props) => {
   return (
     <>
       {input && 
-        <section className="py-5 my-5">
-          <div className="container">
+        <section>
+          <div className="container" style={{marginBottom:'200px'}}>
             <h1 className="mb-5">Account Settings</h1>
             <div className="bg-white shadow rounded-lg d-block d-sm-flex">
               <div className="profile-tab-nav border-right">
@@ -177,7 +179,7 @@ const Dashboard = (props) => {
                     <i className="fa fa-user text-center mr-1"></i>
                     Email
                   </a>
-                  <a
+                  {/* <a
                     className="nav-link"
                     id="application-tab"
                     data-toggle="pill"
@@ -200,139 +202,126 @@ const Dashboard = (props) => {
                   >
                     <i className="fa fa-bell text-center mr-1"></i>
                     Notification
-                  </a>
+                  </a> */}
                 </div>
               </div>
               <div className="tab-content p-4 p-md-5" id="v-pills-tabContent">                
-                  <div className="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab" >
-                    <h3 className="mb-4">Account Settings</h3>
-                    <form onSubmit={onSubmitHandler}>
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>First Name</label>
-                            <input type="text" className="form-control" name="firstName" placeholder="First Name" value={input.firstName} onChange={updateField}/>
-                          </div>
-                          {formSubmitted && (input.firstName.length === 0 &&
-                            <div className="alert alert-danger" role="alert">
-                              Invalid value (make sure input in not empty) 
-                            </div>)
-                          }
-                          {!formSubmitted && (input.firstName.length === 0 &&
-                            <div className="alert alert-warning" role="alert">
-                              Invalid value (make sure input in not empty) 
-                            </div>)
-                          }
+                <div className="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab" >
+                  <h3 className="mb-4">Account Settings</h3>
+                  <form onSubmit={onSubmitHandler}>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>First Name</label>
+                          <input type="text" className="form-control" name="firstName" placeholder="First Name" value={input.firstName} onChange={updateField}/>
                         </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>Last Name</label>
-                            <input type="text" className="form-control" name="lastName" placeholder="Last Name" value={input.lastName} onChange={updateField}/>
-                          </div>
-                          {formSubmitted && (input.lastName.length === 0 &&
-                            <div className="alert alert-danger" role="alert">
-                              Invalid value (make sure input in not empty) 
-                            </div>)
-                          }
-                          {!formSubmitted && (input.lastName.length === 0 &&
-                            <div className="alert alert-warning" role="alert">
-                              Invalid value (make sure input in not empty) 
-                            </div>)
-                          }
+                        {formSubmitted && (input.firstName.length === 0 &&
+                          <div className="alert alert-danger" role="alert">
+                            Invalid value (make sure input in not empty) 
+                          </div>)}
+                        {!formSubmitted && (input.firstName.length === 0 &&
+                          <div className="alert alert-warning" role="alert">
+                            Invalid value (make sure input in not empty) 
+                          </div>)}
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>Last Name</label>
+                          <input type="text" className="form-control" name="lastName" placeholder="Last Name" value={input.lastName} onChange={updateField}/>
                         </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>Email</label>
-                            <input disabled type="email" className="form-control" name="email" placeholder="Email" value={props.currentUser.email}/>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>Address</label>
-                            {<AddressInput address={input.address} onSelectInfo={onSelectInfo} />}
-                            {/* <input id="row-item-big" type="text" className="form-control" name="address" placeholder="Address" value={input.address}  onChange={updateField} list="somethingelse"/> */}
-                            <datalist id="somethingelse"></datalist>
-                          </div>
-                          {formSubmitted && (input.address.length === 0 &&
-                            <div className="alert alert-danger" role="alert">
-                              Invalid value (make sure input in not empty) 
-                            </div>)
-                          }
-                          {!formSubmitted && (input.address.length === 0 &&
-                            <div className="alert alert-warning" role="alert">
-                              Invalid value (make sure input in not empty) 
-                            </div>)
-                          }
-                        </div>
-                        <div className="col-md-4">
-                          <div className="form-group">
-                            <label>City</label>
-                            <input disabled type="text" className="form-control" name="city" placeholder="City" value={input.city} onChange={updateField}/>
-                          </div>
-                          {formSubmitted && (input.city.length === 0 &&
-                            <div className="alert alert-danger" role="alert">
-                              Invalid value (make sure input in not empty) 
-                            </div>)
-                          }
-                          {!formSubmitted && (input.city.length === 0 &&
-                            <div className="alert alert-warning" role="alert">
-                              Invalid value (make sure input in not empty) 
-                            </div>)
-                          }
-                        </div>
-                        <div className="col-md-4">
-                          <div className="form-group">
-                            <label>State/Province</label>
-                            <input disabled type="text" className="form-control" name="state" placeholder="State/Province" value={input.state} onChange={updateField}/>
-                          </div>
-                          {formSubmitted && (input.state.length === 0 &&
-                            <div className="alert alert-danger" role="alert">
-                              Invalid value (make sure input in not empty) 
-                            </div>)
-                          }
-                          {!formSubmitted && (input.state.length === 0 &&
-                            <div className="alert alert-warning" role="alert">
-                              Invalid value (make sure input in not empty) 
-                            </div>)
-                          }
-                        </div>
-                        <div className="col-md-4">
-                          <div className="form-group">
-                            <label>Postal Code</label>
-                            <input disabled type="text" className="form-control" name="postalCode" placeholder="Postal Code" value={input.postalCode} onChange={updateField}/>
-                          </div>
-                          {formSubmitted && (input.postalCode.length === 0 &&
-                            <div className="alert alert-danger" role="alert">
-                              Invalid value (make sure input in not empty) 
-                            </div>)
-                          }
-                          {!formSubmitted && (input.postalCode.length === 0 &&
-                            <div className="alert alert-warning" role="alert">
-                              Invalid value (make sure input in not empty) 
-                            </div>)
-                          }
+                        {formSubmitted && (input.lastName.length === 0 &&
+                          <div className="alert alert-danger" role="alert">
+                            Invalid value (make sure input in not empty) 
+                          </div>)}
+                        {!formSubmitted && (input.lastName.length === 0 &&
+                          <div className="alert alert-warning" role="alert">
+                            Invalid value (make sure input in not empty) 
+                          </div>)}
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>Email</label>
+                          <input disabled type="email" className="form-control" name="email" placeholder="Email" value={input.email || auth.currentUser.email}/>
                         </div>
                       </div>
-                      {formSubmitted && (settingsUpdateErr ? 
-                        <div className="alert alert-danger" role="alert"> 
-                          <h5 className="alert-heading">Update Unsuccessful</h5> 
-                          <p className="mb-0">Unable to update account settings</p> 
-                        </div> :
-                        <div className="alert alert-success" role="alert"> 
-                          <h5 className="alert-heading">Update Successful</h5> 
-                          <p className="mb-0">Account Settings Updated Successfully</p> 
-                        </div>)
-                      }   
-                      <div className="mb-2">
-                        <button className="btn btn-primary mr-1" type="submit">Update</button>
-                        <button className="btn btn-secondary" type="button" onClick={onResetAccountSettings}>Cancel</button>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>Address</label>
+                          {<AddressInput address={input.address} onSelectInfo={onSelectInfo} />}
+                          {/* <input id="row-item-big" type="text" className="form-control" name="address" placeholder="Address" value={input.address}  onChange={updateField} list="somethingelse"/> */}
+                          <datalist id="somethingelse"></datalist>
+                        </div>
+                        {formSubmitted && (input.address.length === 0 &&
+                          <div className="alert alert-danger" role="alert">
+                            Invalid value (make sure input in not empty) 
+                          </div>)}
+                        {!formSubmitted && (input.address.length === 0 &&
+                          <div className="alert alert-warning" role="alert">
+                            Invalid value (make sure input in not empty) 
+                          </div>)}
                       </div>
-                      <div className="mb-0">
-                        <button type="button" className="btn btn-outline-info mr-1" type="button" onClick={onVerifiyUser}>Verify Email</button>
-                        <button type="button" className="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModalCenter">Delete Account</button>
+                      <div className="col-md-4">
+                        <div className="form-group">
+                          <label>City</label>
+                          <input disabled type="text" className="form-control" name="city" placeholder="City" value={input.city} onChange={updateField}/>
+                        </div>
+                        {formSubmitted && (input.city.length === 0 &&
+                          <div className="alert alert-danger" role="alert">
+                            Invalid value (make sure input in not empty) 
+                          </div>)}
+                        {!formSubmitted && (input.city.length === 0 &&
+                          <div className="alert alert-warning" role="alert">
+                            Invalid value (make sure input in not empty) 
+                          </div>)}
                       </div>
-                    </form>
-                  </div>
+                      <div className="col-md-4">
+                        <div className="form-group">
+                          <label>State/Province</label>
+                          <input disabled type="text" className="form-control" name="state" placeholder="State/Province" value={input.state} onChange={updateField}/>
+                        </div>
+                        {formSubmitted && (input.state.length === 0 &&
+                          <div className="alert alert-danger" role="alert">
+                            Invalid value (make sure input in not empty) 
+                          </div>)}
+                        {!formSubmitted && (input.state.length === 0 &&
+                          <div className="alert alert-warning" role="alert">
+                            Invalid value (make sure input in not empty) 
+                          </div>)}
+                      </div>
+                      <div className="col-md-4">
+                        <div className="form-group">
+                          <label>Postal Code</label>
+                          <input disabled type="text" className="form-control" name="postalCode" placeholder="Postal Code" value={input.postalCode} onChange={updateField}/>
+                        </div>
+                        {formSubmitted && (input.postalCode.length === 0 &&
+                          <div className="alert alert-danger" role="alert">
+                            Invalid value (make sure input in not empty) 
+                          </div>)}
+                        {!formSubmitted && (input.postalCode.length === 0 &&
+                          <div className="alert alert-warning" role="alert">
+                            Invalid value (make sure input in not empty) 
+                          </div>)}
+                      </div>
+                    </div>
+                    {formSubmitted && (settingsUpdateErr ? 
+                      <div className="alert alert-danger" role="alert"> 
+                        <h5 className="alert-heading">Update Unsuccessful</h5> 
+                        <p className="mb-0">Unable to update account settings</p> 
+                      </div> :
+                      <div className="alert alert-success" role="alert"> 
+                        <h5 className="alert-heading">Update Successful</h5> 
+                        <p className="mb-0">Account Settings Updated Successfully</p> 
+                      </div>)}   
+                    <div className="mb-2">
+                      <button className="btn btn-primary mr-1" type="submit">Update</button>
+                      <button className="btn btn-secondary" type="button" onClick={onResetAccountSettings}>Cancel</button>
+                    </div>
+                    <div className="mb-0">
+                      <button type="button" className="btn btn-outline-info mr-1" type="button" onClick={onVerifiyUser}>Verify Email</button>
+                      <button type="button" className="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModalCenter">Delete Account</button>
+                    </div>
+                  </form>
+                </div>
                 <div className="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
                   <h3 className="mb-4">Password Settings</h3>
                   <form onSubmit={onNewPassword}>
@@ -379,28 +368,13 @@ const Dashboard = (props) => {
                       <div className="col-md-6">
                         <div className="form-group">
                           <label>Current Email</label>
-                          <input disabled type="email" className="form-control" value={props.currentUser.email}/>
+                          <input disabled type="email" className="form-control" value={input.email || auth.currentUser.email}/>
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="form-group">
                           <label>New Email</label>
-                          <input required type="email" className="form-control" name="newEmail" value={input.newEmail} onChange={updateField}/>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <div className="form-check">
-                            <input
-                              className="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="recovery"
-                            />
-                            <label className="form-check-label">
-                              Recovery
-                            </label>
-                          </div>
+                          <input required type="email" className="form-control" name="newEmail" placeholder="New Email" value={input.newEmail} onChange={updateField}/>
                         </div>
                       </div>
                     </div>
@@ -410,7 +384,7 @@ const Dashboard = (props) => {
                     </div>
                   </form>
                 </div>
-                <div className="tab-pane fade" id="application" role="tabpanel" aria-labelledby="application-tab" >
+                {/* <div className="tab-pane fade" id="application" role="tabpanel" aria-labelledby="application-tab" >
                   <h3 className="mb-4">Application Settings</h3>
                   <div className="row">
                     <div className="col-md-6">
@@ -494,7 +468,7 @@ const Dashboard = (props) => {
                     <button className="btn btn-primary">Update</button>
                     <button className="btn btn-light">Cancel</button>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
