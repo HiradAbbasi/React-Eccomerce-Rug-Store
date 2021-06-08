@@ -2,6 +2,26 @@ import React, { useState, useEffect } from "react";
 // import { db, auth } from "./firebase";
 
 const Checkout = () => {
+  const validateCreditCard = (value) => {
+    value = [4, 1, 3, 7, 8, 9, 4, 7, 1, 1, 7, 5, 5, 9, 0, 4];
+    if(toDouble(value).reduce((a, b) => a + b, 0) % 10) {
+      console.log("PLEASE TRY A DIFFERENT NUMBER");
+    } else {
+      console.log("VALID CREDIT CARD");
+    }
+  }
+
+  const toDouble = (array) => {
+    for (var i = 0; i < array.length; i+=2) {
+      if(array[i] * 2 > 9){
+        array[i] = parseInt((array[i] * 2).toString().substr(0,1)) + parseInt((array[i] * 2).toString().substr(1,1));
+      } else {
+        array[i] *= 2;
+      }
+    }
+    return array;
+  }
+
   return (
     <div className="container" style={{marginBottom: '200px'}}>
       <div className="py-5 text-center">
@@ -52,7 +72,7 @@ const Checkout = () => {
             <div className="input-group">
               <input type="text" className="form-control" placeholder="Promo code"/>
               <div className="input-group-append">
-              <button type="submit" className="btn btn-primary">Redeem</button>
+              <button type="button" className="btn btn-primary" onClick={validateCreditCard}>Redeem</button>
               </div>
             </div>
           </form>
@@ -190,7 +210,7 @@ const Checkout = () => {
               </div>
             </div>
             <hr className="mb-4"/>
-            <button className="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+            <button className="btn btn-primary btn-lg btn-block" type="submit" onClick={validateCreditCard}>Continue to checkout</button>
           </form>
         </div>
       </div>

@@ -61,7 +61,7 @@ const App = () => {
             <Route path="/product/:id">
               <ProductDetail />
             </Route>
-            <Route path="/cart">
+            <Route path="/checkout">
               <Checkout />
             </Route>
             {/* <Route path="/search">
