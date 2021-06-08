@@ -1,32 +1,30 @@
 import React, { useState } from "react";
 
 const Footer = () => {
-
-
   return (
     <footer class="page-footer font-small mdb-color pt-4">
       <div class="container text-center text-md-left">
         <div class="row text-center text-md-left mt-3 pb-3">
         <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-            <h6 class="text-uppercase mb-4 font-weight-bold">Company name</h6>
-            <p>Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit amet,
-            consectetur
-            adipisicing elit.</p>
+            <h6 class="text-uppercase mb-4 font-weight-bold">Ecommerce</h6>
+            <p>
+              Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit amet,consectetur adipisicing elit.
+            </p>
         </div>
         <hr class="w-100 clearfix d-md-none"/>
         <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
             <h6 class="text-uppercase mb-4 font-weight-bold">Products</h6>
             <p>
-            <a href="#!">MDBootstrap</a>
+            <a href="#!">Product1</a>
             </p>
             <p>
-            <a href="#!">MDWordPress</a>
+            <a href="#!">Product2</a>
             </p>
             <p>
-            <a href="#!">BrandFlow</a>
+            <a href="#!">Product3</a>
             </p>
             <p>
-            <a href="#!">Bootstrap Angular</a>
+            <a href="#!">Product4</a>
             </p>
         </div>
         <hr class="w-100 clearfix d-md-none"/>
@@ -49,13 +47,13 @@ const Footer = () => {
         <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
             <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
             <p>
-            <i class="fas fa-home mr-3"></i> New York, NY 10012, US</p>
+            <i class="fa fa-home mr-3"></i> Winnipeg, R3T1L2, CAN</p>
             <p>
-            <i class="fas fa-envelope mr-3"></i> info@gmail.com</p>
+            <i class="fa fa-envelope mr-3"></i> contact@ecommerce.com</p>
             <p>
-            <i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
+            <i class="fa fa-phone mr-3"></i>+1 (204) 914-5246</p>
             <p>
-            <i class="fas fa-print mr-3"></i> + 01 234 567 89</p>
+            <i class="fa fa-print mr-3"></i>+1 (204) 512-2333</p>
         </div>
         </div>
         <hr/>
@@ -63,7 +61,7 @@ const Footer = () => {
         <div class="col-md-7 col-lg-8">
             <p class="text-center text-md-left">© 2020 Copyright:
             <a href="https://mdbootstrap.com/">
-                <strong> MDBootstrap.com</strong>
+                <strong> Ecommerce.com</strong>
             </a>
             </p>
         </div>
@@ -72,22 +70,22 @@ const Footer = () => {
             <ul class="list-unstyled list-inline">
                 <li class="list-inline-item">
                 <a class="btn-floating btn-sm rgba-white-slight mx-1">
-                    <i class="fab fa-facebook-f"></i>
+                    <i class="fa fa-facebook-f"></i>
                 </a>
                 </li>
                 <li class="list-inline-item">
                 <a class="btn-floating btn-sm rgba-white-slight mx-1">
-                    <i class="fab fa-twitter"></i>
+                    <i class="fa fa-twitter"></i>
                 </a>
                 </li>
                 <li class="list-inline-item">
                 <a class="btn-floating btn-sm rgba-white-slight mx-1">
-                    <i class="fab fa-google-plus-g"></i>
+                    <i class="fa fa-google"></i>
                 </a>
                 </li>
                 <li class="list-inline-item">
                 <a class="btn-floating btn-sm rgba-white-slight mx-1">
-                    <i class="fab fa-linkedin-in"></i>
+                    <i class="fa fa-github"></i>
                 </a>
                 </li>
             </ul>

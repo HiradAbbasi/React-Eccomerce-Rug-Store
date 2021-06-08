@@ -2,11 +2,19 @@ import React, { useState, useEffect } from "react";
 import "../src/Header.css";
 import { Link } from "react-router-dom";
 import { auth } from "./firebase";
+import CartDropdown from "./CartDropdown";
 
 const Header = () => {
+  const [showCart, setShowCart] = useState(false);
+
   const logout = () => {
     auth.signOut();
   }
+
+  const test = () => {
+    setShowCart(!showCart);
+  }
+
   return (
     <div className="super_container">
       <header className="header">
@@ -21,7 +29,7 @@ const Header = () => {
                       alt=""
                     />
                   </div>
-                  +91 9823 132 111
+                  +1 (204) 222-2222
                 </div>
                 <div className="top_bar_contact_item">
                   <div className="top_bar_icon">
@@ -31,7 +39,7 @@ const Header = () => {
                     />
                   </div>
                   <a href="mailto:fastsales@gmail.com">
-                    contact@bbbootstrap.com
+                    contact@ecommerce.com
                   </a>
                 </div>
                 <div className="top_bar_content ml-auto">
@@ -44,13 +52,10 @@ const Header = () => {
                         </a>
                         <ul>
                           <li>
-                            <a href="#">Italian</a>
+                            <a href="#">French</a>
                           </li>
                           <li>
-                            <a href="#">Spanish</a>
-                          </li>
-                          <li>
-                            <a href="#">Japanese</a>
+                            <a href="#">Farsi</a>
                           </li>
                         </ul>
                       </li>
@@ -65,9 +70,6 @@ const Header = () => {
                           </li>
                           <li>
                             <a href="#">GBP British Pound</a>
-                          </li>
-                          <li>
-                            <a href="#">JPY Japanese Yen</a>
                           </li>
                         </ul>
                       </li>
@@ -108,7 +110,7 @@ const Header = () => {
               <div className="col-lg-2 col-sm-3 col-3 order-1">
                 <div className="logo_container">
                   <div className="logo">
-                    <a href="#">BBB</a>
+                    <a href="#">Ecommerce</a>
                   </div>
                 </div>
               </div>
@@ -145,8 +147,7 @@ const Header = () => {
                   </div>
                   <div className="cart">
                     <div className="cart_container d-flex flex-row align-items-center justify-content-end">
-                      <div className="cart_icon">
-                        {" "}
+                      <div className="cart_icon" onClick={test}>
                         <img
                           src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918704/cart.png"
                           alt=""
@@ -156,12 +157,15 @@ const Header = () => {
                         </div>
                       </div>
                       <div className="cart_content">
-                        <div className="cart_text">
+                      
+                        <div className="cart_text" onClick={test}>
                           <a href="#">Cart</a>
                         </div>
                         <div className="cart_price">$185</div>
+                        {showCart && <CartDropdown />}
                       </div>
                     </div>
+                    
                   </div>
                 </div>
               </div>

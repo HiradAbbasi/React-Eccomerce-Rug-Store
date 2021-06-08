@@ -132,9 +132,31 @@ const Dashboard = (props) => {
   }
 
   const onVerifiyUser  = () => {
+    // var actionCodeSettings = {
+    //   url: 'https://www.example.com/?email=' + firebase.auth().currentUser.email,
+    //   iOS: {
+    //     bundleId: 'com.example.ios'
+    //   },
+    //   android: {
+    //     packageName: 'com.example.android',
+    //     installApp: true,
+    //     minimumVersion: '12'
+    //   },
+    //   handleCodeInApp: true,
+    //   // When multiple custom dynamic link domains are defined, specify which
+    //   // one to use.
+    //   dynamicLinkDomain: "example.page.link"
+    // };
+    // auth.currentUser.sendEmailVerification(actionCodeSettings)
+    //   .then(function() {
+    //     console.log("Email verification link sent successfully")
+    //   })
+    //   .catch(function(error) {
+    //     // Error occurred. Inspect error.code.
+    //   });
+
     auth.currentUser.sendEmailVerification().then(function() {
       console.log("User verification email sent successfully");
-      console.log(auth.currentUser.emailVerified);
     }).catch(function(error) {
       console.log(error);
     });
