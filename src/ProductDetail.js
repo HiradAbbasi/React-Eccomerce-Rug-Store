@@ -1,21 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const [activeImg, setActiveImg] = useState('https://www.ivsauto.ca/frontend/assets/images/placeholder/inventory-full-placeholder.png');
+  let sixDigitId;
+  let fourDigitId;
+  let rugName;
+  
+  useEffect(() => {
+    getLargeImg(0);
+    // if(allImagesContainer.children) {
+    //   console.log('s')
+    // }
+    // setActiveImg();
+  }, []);
+
+  const getLargeImg = (num) => {
+    let allImagesContainer = document.querySelector('.PD-all-images');
+    allImagesContainer.querySelectorAll('.PD-all-images li').forEach(element => {
+      element.classList.remove('selected-product-img');
+    });  
+    
+    if(allImagesContainer.querySelectorAll('li img').length > 0) {
+      allImagesContainer.querySelectorAll('li')[num].classList.toggle('selected-product-img')
+      sixDigitId = allImagesContainer.querySelectorAll('li img')[num].getAttribute('src').substr(50, 6);
+      fourDigitId = allImagesContainer.querySelectorAll('li img')[num].getAttribute('src').substr(57, 4);
+      rugName = allImagesContainer.querySelectorAll('li img')[num].getAttribute('src').substr(62).replace("-r.jpg", "-z.jpg");
+      
+      let defaultSrc = `https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/${sixDigitId}/${fourDigitId}/${rugName}`;
+      setActiveImg(defaultSrc);
+    }
+  }
+  
   return (
     <section className="product-detail-container">
       <div className="PD-img-container">
         <ul className="PD-all-images">
-          <li>1</li>
-          <li>2</li>
-          <li>3</li>
-          <li>4</li>
-          <li>5</li>
-          <li>6</li>
+          <li onClick={() => getLargeImg(0)}><img src="https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202118/0483/mahalia-hand-woven-wool-rug-1-r.jpg"/></li>
+          <li onClick={() => getLargeImg(1)}><img src="https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202109/1056/mahalia-hand-woven-wool-rug-r.jpg"/></li>
+          <li onClick={() => getLargeImg(2)}><img src="https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202109/0948/mahalia-hand-woven-wool-rug-r.jpg"/></li>
+          <li onClick={() => getLargeImg(3)}><img src="https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202109/0667/mahalia-hand-woven-wool-rug-r.jpg"/></li>
+          <li onClick={() => getLargeImg(4)}><img src="https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202109/0815/mahalia-hand-woven-wool-rug-r.jpg"/></li>
+          <li onClick={() => getLargeImg(5)}><img src="https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202113/0025/mahalia-hand-woven-wool-rug-r.jpg"/></li>
         </ul>
         <div className="PD-default-img-container">
-          <img src="https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202118/0483/mahalia-hand-woven-wool-rug-1-z.jpg"/>
+          <img src={activeImg}/>
         </div>
       </div>
       <div className="PD-options-container">
@@ -34,7 +64,7 @@ const ProductDetail = () => {
         <h5 className="PD-shipping-options">Select product details for shipping & pickup availability.</h5>
         <div class="form-check">
           <input type="checkbox" class="form-check-input"/>
-          <label class="form-check-label">Ship tp Home</label>
+          <label class="form-check-label">Ship to Home</label>
         </div>
         <div class="form-check">
           <input type="checkbox" class="form-check-input"/>

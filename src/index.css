@@ -137,7 +137,7 @@ body {
   width: 70px;
   height: 100px;
   margin: 10px 0;
-  outline: 1px solid #000;
+  border: 1px solid rgb(77, 77, 77);
 }
 
 .PD-options-container {
@@ -146,6 +146,7 @@ body {
   justify-content: space-between;
   padding: 40px;
   width: 40%;
+  height: 600px;
 }
 
 .PD-title {
@@ -215,9 +216,13 @@ body {
 }
 
 .PD-shipping-options {
-  font-size: 14px;
+  font-size: 16px;
   margin: 20px 0;
   line-height: 20px;
   color: #010101;
   text-transform: none;
+}
+
+.selected-product-img {
+  border: 2px solid #0e8ce4 !important;
 }

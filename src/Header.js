@@ -158,14 +158,13 @@ const Header = () => {
                       </div>
                       <div className="cart_content">
                       
-                        <div className="cart_text" onClick={test}>
+                        <div className="cart_text">
                           <a href="#">Cart</a>
                         </div>
                         <div className="cart_price">$185</div>
                         {showCart && <CartDropdown />}
                       </div>
                     </div>
-                    
                   </div>
                 </div>
               </div>
