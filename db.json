@@ -1,19 +1,91 @@
-{
-  "shoes": [
-    {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
-    }
-  ],
-  "comments": [
-    {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    }
-  ],
-  "reviews": {
-    "name": "typicode"
+[
+  {
+    "products": [
+      {
+        "id": 1,
+        "name": "Eva Persian-Style Hand Tufted Wool Rug",
+        "images" :[
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202119/0372/eva-persian-style-hand-tufted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202119/0014/eva-persian-style-hand-tufted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202109/0468/eva-persian-style-hand-tufted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202113/0025/eva-persian-style-hand-tufted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202120/0055/eva-persian-style-hand-tufted-wool-rug-r.jpg"
+        ],
+        "dimensions": ["3' x 5'", "5' x 8'", "8' x 10'", "9' x 12'", "10' x 14'", "8' diam.'", "2.5' x 9'"],
+        "prices" : ["299", "699", "999", "1,499", "1,999","659", "399"]
+      },
+      {
+        "id": 2,
+        "name": "Malika Persian-Style Hand Tufted Wool Rug",
+        "images" :[
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202119/0393/malika-persian-style-hand-tufted-wool-rug-1-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202109/0877/malika-persian-style-hand-tufted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202109/0932/malika-persian-style-hand-tufted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202120/0055/eva-persian-style-hand-tufted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202113/0025/malika-persian-style-hand-tufted-wool-rug-z.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202112/0172/malika-hand-tufted-wool-persian-style-rug-r.jpg"
+        ],
+        "dimensions": ["3' x 5'", "5' x 8'", "8' diam.'", "8' x 10'", "9' x 12'", "10' x 14'", "2.5' x 9'"],
+        "prices" : ["299", "599", "549", "799", "1,299","1,899", "299"]
+      },
+      {
+        "id": 3,
+        "name": "Nicolette Hand-Knotted Wool Rug",
+        "images" :[
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202118/0283/nicolette-hand-knotted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202121/0033/nicolette-hand-knotted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202121/0036/nicolette-hand-knotted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202112/0436/nicolette-hand-knotted-wool-rug-z.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202111/0512/nicolette-hand-knotted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202121/0020/nicolette-hand-knotted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202121/0039/nicolette-hand-knotted-wool-rug-r.jpg"
+        ],
+        "dimensions": ["3' x 5'", "5' x 8'", "8' x 10'", "9' x 12'", "10' x 14'", "2.5' x 9'"],
+        "prices" : ["699", "999", "1,399", "1,999", "2,499", "799"]
+      },
+      {
+        "id": 4,
+        "name": "Channing Persian-Style Hand Tufted Wool Rug",
+        "images" :[
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202118/0035/channing-persian-style-hand-tufted-wool-rug-2-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202118/0035/channing-persian-style-hand-tufted-wool-rug-1-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202119/0392/channing-persian-style-hand-tufted-wool-rug-1-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202109/1052/channing-persian-style-hand-tufted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202119/0392/channing-persian-style-hand-tufted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202113/0025/channing-persian-style-hand-tufted-wool-rug-r.jpg"
+        ],
+        "dimensions": ["3' x 5'", "5' x 8'", "8' x 10'", "9' x 12'", "10' x 14'", "2.5' x 9'"],
+        "prices" : ["299", "699", "999", "1,499", "1,999", "399"]
+      },
+      {
+        "id": 5,
+        "name": "Charli Persian-Style Easy Care Rug",
+        "images" :[
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202122/0089/charli-persian-style-easy-care-rug-1-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202119/0340/charli-persian-style-easy-care-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202051/0168/charli-persian-style-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202051/0167/charli-persian-style-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202051/0167/charli-persian-style-rug-1-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202051/0168/charli-persian-style-rug-1-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202051/0169/charli-persian-style-rug-r.jpg"
+        ],
+        "dimensions": ["5'2 X 7'", "6'7 X 9'",  "7'10 X 10'3"],
+        "prices" : ["149", "269", "199"]
+      },
+      {
+        "id": 6,
+        "name": "Nicolette Hand-Knotted Wool Rug",
+        "images" :[
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202118/0281/nicolette-hand-knotted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202109/0998/nicolette-hand-knotted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202109/0875/nicolette-hand-knotted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202107/0034/nicolette-hand-knotted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202109/0618/nicolette-hand-knotted-wool-rug-r.jpg",
+          "https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202121/0028/nicolette-hand-knotted-wool-rug-r.jpg"
+        ],
+        "dimensions": ["3' x 5'", "5' x 8'", "8' x 10'", "9' x 12'", "10' x 14'", "2.5' x 9'"],
+        "prices" : ["699", "999", "1399", "1,999", "2,499", "799"]
+      }
+    ]
   }
-}
+]

@@ -9,6 +9,7 @@ import Dashboard from "./Dashboard";
 import ProductDetail from "./ProductDetail";
 import CartDropdown from "./CartDropdown";
 import Checkout from "./Checkout";
+import QueryResults from "./QueryResults";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(""); 
@@ -64,6 +65,9 @@ const App = () => {
             </Route>
             <Route path="/checkout">
               <Checkout />
+            </Route>
+            <Route path="/results">
+              <QueryResults />
             </Route>
             {/* <Route path="/search">
               <Search search={search} toggleFavorite={toggleFavorite} searchedShows={searchedShows} />

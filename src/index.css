@@ -235,3 +235,13 @@ body {
   align-items: center;
   gap: 20px;
 }
+
+.all-query-results-container {
+  margin: 0 auto;
+  flex-wrap: wrap;
+  display: flex;
+  justify-content:center;
+  gap:20px;
+  width:100%;
+  max-width:1300px;
+}
