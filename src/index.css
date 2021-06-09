@@ -226,3 +226,12 @@ body {
 .selected-product-img {
   border: 2px solid #0e8ce4 !important;
 }
+
+.bi-telephone {
+  color: #0e8ce4;
+}
+
+.d-flex {
+  align-items: center;
+  gap: 20px;
+}

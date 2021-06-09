@@ -13,6 +13,7 @@ const SignUp = (props) => {
     address: "",
     city: "",
     state: "",
+    country: "",
     postalCode: "",
     email: "",
     password: "",
@@ -41,20 +42,21 @@ const SignUp = (props) => {
     history.push('/sign-in');
   }
 
-  const onSelectInfo = (postalCode, city, state, address) => {
+  const onSelectInfo = (postalCode, city, state, country, address) => {
     setInput(prevInputs => ({...prevInputs, ['address'] : address }));
     setInput(prevInputs => ({...prevInputs, ['postalCode'] : postalCode }));
     setInput(prevInputs => ({...prevInputs, ['city'] : city }));
     setInput(prevInputs => ({...prevInputs, ['state'] : state }));
+    setInput(prevInputs => ({...prevInputs, ['country'] : country }));
   }
 
   return (
     <section className="signIn-signUp-container">
       <div className="left-container">
         <div className="random-message-center">
-          <h1>Welcome Back!</h1>
-          <p>To keep connected with us please login with your personal info</p>
-          <button onClick={redirectToSignIn}>Sign In</button>
+          <h1>Hello, Friend!</h1>
+          <p>Enter your details and start your journey with us</p>
+          <button onClick={redirectToSignIn}>Sign Up</button>
         </div>  
       </div>
       <div className="right-container">
@@ -85,13 +87,17 @@ const SignUp = (props) => {
               </div>
             </div>
             <div className="form-row">
-              <div className="form-group col-md-6 mb-3">
+              <div className="form-group col-md-4 mb-3">
                 <label>City</label>
                 <input required disabled type="text" className="form-control" name="city" placeholder="City" value={input.city} onChange={updateField}/>
               </div>
-              <div className="form-group col-md-6 mb-3">
+              <div className="form-group col-md-4 mb-3">
                 <label>State</label>
                 <input required disabled type="text" className="form-control" name="state" placeholder="State/Province" value={input.state} onChange={updateField}/>
+              </div>
+              <div className="form-group col-md-4 mb-3">
+                <label>Country</label>
+                <input required disabled type="text" className="form-control" name="country" placeholder="Country" value={input.country} onChange={updateField}/>
               </div>
             </div>
             <div className="form-group">

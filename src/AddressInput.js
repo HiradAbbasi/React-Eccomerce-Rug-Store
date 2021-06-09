@@ -36,7 +36,7 @@ const AddressInput = (props) => {
         document.getElementById('dropDownResults').insertAdjacentHTML('beforeend', `
         <option value="${element.label}"></option>`)
       } else {
-        props.onSelectInfo(element.address.postalCode, element.address.city, element.address.state, address);
+        props.onSelectInfo(element.address.postalCode, element.address.city, element.address.state,  element.address.country, address);
       }
     });
   }

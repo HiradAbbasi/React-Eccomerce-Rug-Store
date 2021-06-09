@@ -159,7 +159,7 @@ const Header = () => {
                       <div className="cart_content">
                       
                         <div className="cart_text">
-                          <a href="#">Cart</a>
+                          <Link to='/checkout'>Cart</Link>
                         </div>
                         <div className="cart_price">$185</div>
                         {showCart && <CartDropdown />}
