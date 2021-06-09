@@ -35,6 +35,7 @@ const App = () => {
         address: userInfo.address,
         city: userInfo.city,
         state: userInfo.state,
+        country: userInfo.country,
         postalCode: userInfo.postalCode,
       })
     })
@@ -56,7 +57,7 @@ const App = () => {
               {currentUser ? <Redirect to="/dashboard" /> : <SignUp signUp={signUp} />}
             </Route>
             <Route path="/dashboard">
-              {currentUser ? <Dashboard currentUser={currentUser} /> : <Redirect to="/sign-in"/>}
+              {currentUser ? <Dashboard /> : <Redirect to="/sign-in"/>}
             </Route>
             <Route path="/product/:id">
               <ProductDetail />

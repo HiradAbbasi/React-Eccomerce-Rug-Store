@@ -3,19 +3,20 @@ import AddressInput from "./AddressInput";
 import { db, auth, firebase } from "./firebase";
 import "../src/Dashboard.css";
 
-const Dashboard = (props) => {
+const Dashboard = () => {
   const [input, setInput] = useState();
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [settingsUpdateErr, setSettingsUpdateErr] = useState(false);
 
   useEffect(() => {
-    db.collection('users').doc(props.currentUser.uid).get().then(doc => {
+    db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
       setInput({
         firstName: doc.data().firstName,
         lastName: doc.data().lastName,
         address: doc.data().address,
         city: doc.data().city,
         state: doc.data().state,
+        country: doc.data().country,
         postalCode: doc.data().postalCode,
       })
     })
@@ -31,12 +32,13 @@ const Dashboard = (props) => {
     e.preventDefault();
     if(Object.values(input).find(info => info == "") == undefined) {
       setSettingsUpdateErr(false);
-      db.collection('users').doc(props.currentUser.uid).set({
+      db.collection('users').doc(auth.currentUser.uid).set({
         firstName: input.firstName,
         lastName: input.lastName,
         address: input.address,
         city: input.city,
         state: input.state,
+        country: input.country,
         postalCode: input.postalCode,
       }).catch(err => {
         setSettingsUpdateErr(true);
@@ -51,7 +53,7 @@ const Dashboard = (props) => {
 
   const onResetPassword = () => {
     //onReAuthenticateUser();
-    auth.sendPasswordResetEmail(props.currentUser.email).then(function() {
+    auth.sendPasswordResetEmail(auth.currentUser.email).then(function() {
       console.log('Email Sent Successfully');
     }).catch(function(error) {
       setSettingsUpdateErr(true);
@@ -93,13 +95,14 @@ const Dashboard = (props) => {
   }
 
   const onResetAccountSettings = () => {
-    db.collection('users').doc(props.currentUser.uid).get().then(doc => {
+    db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
       setInput({
         firstName: doc.data().firstName,
         lastName: doc.data().lastName,
         address: doc.data().address,
         city: doc.data().city,
         state: doc.data().state,
+        country: doc.data().country,
         postalCode: doc.data().postalCode,
       })
     })
@@ -162,11 +165,12 @@ const Dashboard = (props) => {
     });
   }  
 
-  const onSelectInfo = (postalCode, city, state, address) => {
+  const onSelectInfo = (postalCode, city, state, country, address) => {
     setInput(prevInputs => ({...prevInputs, ['address'] : address }));
     setInput(prevInputs => ({...prevInputs, ['postalCode'] : postalCode }));
     setInput(prevInputs => ({...prevInputs, ['city'] : city }));
     setInput(prevInputs => ({...prevInputs, ['state'] : state }));
+    setInput(prevInputs => ({...prevInputs, ['country'] : country }));
   }
 
   return (
@@ -282,7 +286,21 @@ const Dashboard = (props) => {
                             Invalid value (make sure input in not empty) 
                           </div>)}
                       </div>
-                      <div className="col-md-4">
+                      <div className="col-md-3">
+                        <div className="form-group">
+                          <label>Country</label>
+                          <input disabled type="text" className="form-control" name="country" placeholder="Country" value={input.country} onChange={updateField}/>
+                        </div>
+                        {formSubmitted && (input.country.length === 0 &&
+                          <div className="alert alert-danger" role="alert">
+                            Invalid value (make sure input in not empty) 
+                          </div>)}
+                        {!formSubmitted && (input.country.length === 0 &&
+                          <div className="alert alert-warning" role="alert">
+                            Invalid value (make sure input in not empty) 
+                          </div>)}
+                      </div>
+                      <div className="col-md-3">
                         <div className="form-group">
                           <label>City</label>
                           <input disabled type="text" className="form-control" name="city" placeholder="City" value={input.city} onChange={updateField}/>
@@ -296,7 +314,7 @@ const Dashboard = (props) => {
                             Invalid value (make sure input in not empty) 
                           </div>)}
                       </div>
-                      <div className="col-md-4">
+                      <div className="col-md-3">
                         <div className="form-group">
                           <label>State/Province</label>
                           <input disabled type="text" className="form-control" name="state" placeholder="State/Province" value={input.state} onChange={updateField}/>
@@ -310,7 +328,7 @@ const Dashboard = (props) => {
                             Invalid value (make sure input in not empty) 
                           </div>)}
                       </div>
-                      <div className="col-md-4">
+                      <div className="col-md-3">
                         <div className="form-group">
                           <label>Postal Code</label>
                           <input disabled type="text" className="form-control" name="postalCode" placeholder="Postal Code" value={input.postalCode} onChange={updateField}/>
