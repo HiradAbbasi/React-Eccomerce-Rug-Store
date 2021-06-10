@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { db } from "./firebase";
 
-const ProductDetail = () => {
+const ProductDetail = (props) => {
   const { id } = useParams();
+  const [product, setProduct] = useState();
+  const [selectedProduct, setSelectedProduct] = useState({});
   const [activeImg, setActiveImg] = useState('https://www.ivsauto.ca/frontend/assets/images/placeholder/inventory-full-placeholder.png');
   let sixDigitId;
   let fourDigitId;
   let rugName;
   
   useEffect(() => {
-    getLargeImg(0);
-    // if(allImagesContainer.children) {
-    //   console.log('s')
-    // }
-    // setActiveImg();
+    db.collection('products').doc(id).get().then(doc => {
+      setProduct(doc.data());
+      setSelectedProduct({name: doc.data().name, cartImg: doc.data().images[0], id: id});
+    }).then(() =>
+      getLargeImg(0)
+    )
   }, []);
 
   const getLargeImg = (num) => {
@@ -33,46 +37,63 @@ const ProductDetail = () => {
     }
   }
   
+  const setPrice = (index) => {
+    setSelectedProduct(prevInputs => ({...prevInputs, ['price']: product.prices[index] }));
+    setSelectedProduct(prevInputs => ({...prevInputs, ['size']: product.dimensions[index] }));
+    
+    document.querySelectorAll('.PD-sizes-container li').forEach(element => {
+      element.classList.remove('price-selected');
+    });
+    document.querySelector('.PD-cost').textContent = `$${product.prices[index]}`;
+    document.querySelectorAll('.PD-sizes-container li')[index].classList.add('price-selected');
+  }
+
+  const updateField = (e) => {
+    e.persist();
+    setSelectedProduct(prevInputs => ({...prevInputs, [e.target.name]: e.target.value }));
+  }
+
   return (
-    <section className="product-detail-container">
-      <div className="PD-img-container">
-        <ul className="PD-all-images">
-          <li onClick={() => getLargeImg(0)}><img src="https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202118/0483/mahalia-hand-woven-wool-rug-1-r.jpg"/></li>
-          <li onClick={() => getLargeImg(1)}><img src="https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202109/1056/mahalia-hand-woven-wool-rug-r.jpg"/></li>
-          <li onClick={() => getLargeImg(2)}><img src="https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202109/0948/mahalia-hand-woven-wool-rug-r.jpg"/></li>
-          <li onClick={() => getLargeImg(3)}><img src="https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202109/0667/mahalia-hand-woven-wool-rug-r.jpg"/></li>
-          <li onClick={() => getLargeImg(4)}><img src="https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202109/0815/mahalia-hand-woven-wool-rug-r.jpg"/></li>
-          <li onClick={() => getLargeImg(5)}><img src="https://assets.pbimgs.com/pbimgs/rk/images/dp/wcm/202113/0025/mahalia-hand-woven-wool-rug-r.jpg"/></li>
-        </ul>
-        <div className="PD-default-img-container">
-          <img src={activeImg}/>
-        </div>
-      </div>
-      <div className="PD-options-container">
-        <h2 className="PD-title">Mahalia Hand Woven Wool Rug</h2>
-        <h5 className="PD-select-size">Select Size:</h5>
-        <ul className="PD-sizes-container">
-          <li>3' x 5'</li>
-          <li>5' x 8'</li>
-          <li>8' x 10'</li>
-          <li>9' x 12'</li>
-          <li>10'x 14'</li>
-          <li>2.5' x 9'</li>
-        </ul>
-        <div className="PD-cost">$399–$2,199</div>
-        <input className="PD-quantity-input form-control" name="quantity" placeholder="QTY"/>
-        <h5 className="PD-shipping-options">Select product details for shipping & pickup availability.</h5>
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input"/>
-          <label class="form-check-label">Ship to Home</label>
-        </div>
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input"/>
-          <label class="form-check-label">Free In-Store or Curbside Pickup</label>
-        </div>
-        <button type="submit" className="btn btn-primary btn-lg btn-block mt-3">ADD TO CART</button>
-      </div>
-    </section>
+    <>
+      {product &&
+        <section className="product-detail-container">
+          <div className="PD-img-container">
+            <ul className="PD-all-images">
+              {product.images.map((img, index) =>
+                <li key={index} onClick={() => getLargeImg(index)}><img src={img}/></li>
+              )}
+            </ul>
+            <div className="PD-default-img-container">
+              <img src={activeImg}/>
+            </div>
+          </div>
+          <div className="PD-options-container">
+            <h2 className="PD-title">{product.name}</h2>
+            <h5 className="PD-select-size">Select Size:</h5>
+            <ul className="PD-sizes-container">
+              {product.dimensions.map((size, index) =>
+                <li key={index} onClick={() => setPrice(index)}>{size}</li>
+              )}
+            </ul>
+            <div className="PD-cost">${`${Math.min(...product.prices)} - $${Math.max(...product.prices)}`}</div>
+            <input className="PD-quantity-input form-control" name="quantity" placeholder="QTY" value={selectedProduct.quantity} onChange={updateField}/>
+            <h5 className="PD-shipping-options">Select product details for shipping & pickup availability.</h5>
+            <div className="form-check">
+              <input type="checkbox" class="form-check-input"/>
+              <label className="form-check-label">Ship to Home</label>
+            </div>
+            <div className="form-check">
+              <input type="checkbox" className="form-check-input"/>
+              <label className="form-check-label">Free In-Store or Curbside Pickup</label>
+            </div>
+            {(selectedProduct.name && selectedProduct.price && selectedProduct.size && selectedProduct.quantity) ?
+              <button type="submit" className="btn btn-primary btn-lg btn-block mt-3" onClick={() => props.addToCart(selectedProduct)}>ADD TO CART</button>:
+              <button type="submit" className="btn btn-primary btn-lg btn-block mt-3" disabled>ADD TO CART</button>
+            }
+          </div>
+        </section>
+      }
+    </>
   );
 };
 

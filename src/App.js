@@ -14,6 +14,7 @@ import QueryResults from "./QueryResults";
 const App = () => {
   const [currentUser, setCurrentUser] = useState(""); 
   const [loading, setLoading] = useState(true);
+  const [cartItems, setCartItems] = useState();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -23,6 +24,14 @@ const App = () => {
 
     return unsubscribe;
   }, []);
+
+  // useEffect(() => {
+  //   db.collection('users').doc(auth.currentUser.uid).update({
+  //     cartItems: cartItems,
+  //   }).catch(err => {
+  //     console.log(err);
+  //   })
+  // }, [cartItems]);
 
   const signIn = (email, password) => {
     return auth.signInWithEmailAndPassword(email, password);
@@ -39,6 +48,25 @@ const App = () => {
         country: userInfo.country,
         postalCode: userInfo.postalCode,
       })
+    })
+  }
+
+  const addToCart = (item) => {
+    // if( db.collection('users').doc(auth.currentUser.uid).collection('cart').doc(item.name)) {
+    //   console.log("already exists")
+    // }
+
+    // db.collection('users').doc(auth.currentUser.uid).collection('cart').doc(item.name).update({
+    //   quantity: "2",
+    // }).catch(err => {
+    //   console.log(err);
+    // })
+
+    // setCartItems(item);  
+    db.collection('users').doc(auth.currentUser.uid).collection('cart').doc(item.id).set({
+      cartItems: item,
+    }).catch(err => {
+      console.log(err);
     })
   }
 
@@ -61,7 +89,7 @@ const App = () => {
               {currentUser ? <Dashboard /> : <Redirect to="/sign-in"/>}
             </Route>
             <Route path="/product/:id">
-              <ProductDetail />
+              <ProductDetail addToCart={addToCart}/>
             </Route>
             <Route path="/checkout">
               <Checkout />
