@@ -7,7 +7,6 @@ import SignUp from "./SignUp";
 import SignIn from "./SignIn";
 import Dashboard from "./Dashboard";
 import ProductDetail from "./ProductDetail";
-import CartDropdown from "./CartDropdown";
 import Checkout from "./Checkout";
 import QueryResults from "./QueryResults";
 
@@ -18,6 +17,16 @@ const App = () => {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
+      if(user) {
+        db.collection('users').doc(auth.currentUser.uid).collection('cart').onSnapshot((querySnapshot) => {
+          let tempCartItems = [];
+          querySnapshot.forEach((doc) => {
+            tempCartItems.push(doc.data());
+          });
+          setCartItems(tempCartItems);
+        })
+      }
+
       setCurrentUser(user);
       setLoading(false);
     });
@@ -52,6 +61,10 @@ const App = () => {
   }
 
   const addToCart = (item) => {
+    db.collection('users').doc(auth.currentUser.uid).collection('cart').doc(item.id+item.size).set({
+      ...item,
+    })
+    
     // if( db.collection('users').doc(auth.currentUser.uid).collection('cart').doc(item.name)) {
     //   console.log("already exists")
     // }
@@ -63,27 +76,22 @@ const App = () => {
     // })
 
     // setCartItems(item);  
-    db.collection('users').doc(auth.currentUser.uid).collection('cart').doc(item.id).set({
-      cartItems: item,
-    }).catch(err => {
-      console.log(err);
-    })
   }
 
   return (
     <>
       {!loading && 
         <>
-          <Header />
+          <Header cartItems={cartItems}/>
           <Switch>
             <Route exact path="/">
               {currentUser ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
             </Route>
             <Route path="/sign-in">
-              {currentUser ? <Redirect to="/dashboard" /> : <SignIn signIn={signIn} />}
+              {currentUser ? <Redirect to="/results" /> : <SignIn signIn={signIn} />}
             </Route>
             <Route path="/sign-up">
-              {currentUser ? <Redirect to="/dashboard" /> : <SignUp signUp={signUp} />}
+              {currentUser ? <Redirect to="/results" /> : <SignUp signUp={signUp} />}
             </Route>
             <Route path="/dashboard">
               {currentUser ? <Dashboard /> : <Redirect to="/sign-in"/>}
