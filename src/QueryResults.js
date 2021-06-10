@@ -19,14 +19,16 @@ const QueryResults = () => {
     <>
       <section className="all-query-results-container">
         {products && products.map(product =>
-          <div className="card text-white bg-primary mb-3" style={{maxWidth: "20rem"}}>
-            <h5 className="card-title">{product[1]}</h5>
-            <div className="card-body" id={product[1]}>
-              <img className="mb-3" src={product[0].images[0]} style={{width: "100px"}}/>
-              <h5 className="card-title">{product[0].name}</h5>
-              {/* <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> */}
+          <Link to={`/product/${product[1]}`}>
+            <div className="card text-white bg-primary mb-3" style={{width: "20rem"}}>
+              <h5 className="card-title">{product[1]}</h5>
+              <div className="card-body" id={product[1]}>
+                <img className="mb-3" src={product[0].images[0]} style={{width: "100px"}}/>
+                <h5 className="card-title">{product[0].name}</h5>
+                {/* <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> */}
+              </div>
             </div>
-          </div>
+          </Link>
         )}
       </section>
     </>

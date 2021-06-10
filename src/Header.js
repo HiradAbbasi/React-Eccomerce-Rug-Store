@@ -1,11 +1,34 @@
 import React, { useState, useEffect } from "react";
 import "../src/Header.css";
 import { Link } from "react-router-dom";
-import { auth } from "./firebase";
-import CartDropdown from "./CartDropdown";
+import { auth, db } from "./firebase";
+import CartItem from "./CartItem";
 
 const Header = () => {
   const [showCart, setShowCart] = useState(false);
+  const [cartItems, setCartItems] = useState();
+
+  useEffect(() => {
+    let tempCartItems = [];
+    db.collection('users').doc(auth.currentUser.uid).collection('cart').get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        tempCartItems.push(doc.data());
+      });
+      setCartItems(tempCartItems);
+    });
+  }, [cartItems]);
+
+  const addQuantity = () => {
+    console.log('Added quantity')
+  }
+
+  const removeQuantity = () => {
+    console.log('Removed quantiy')
+  }
+
+  const removeFromCart = () => {
+    console.log('Removed from cart')
+  }
 
   const logout = () => {
     auth.signOut();
@@ -84,7 +107,7 @@ const Header = () => {
                     </div>
                     {auth.currentUser ? <>
                       <div>
-                        <Link onClick={logout}>Sign Out</Link>
+                        <Link to="/sign-in" onClick={logout}>Sign Out</Link>
                       </div>
                       <div>
                         <Link to='/dashboard'>My Account</Link>
@@ -162,7 +185,21 @@ const Header = () => {
                           <Link to='/checkout'>Cart</Link>
                         </div>
                         <div className="cart_price">$185</div>
-                        {showCart && <CartDropdown />}
+                        {showCart &&
+                          <div className="cart-dropdown"> 
+                            <i class="bi bi-chevron-up"></i>
+                            <div class="list-group">
+                              {cartItems.length > 0 ? cartItems.map((item) =>
+                                <CartItem key={item.id} item={item.cartItems} addQuantity={addQuantity} removeQuantity={removeQuantity}/>
+                              ) :
+                              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                <div class="d-flex w-100" style={{justifyContent: 'center', }}>
+                                  <h5 class="mb-0" >Your shopping cart is currently empty</h5>
+                                </div>
+                              </a>}
+                            </div>
+                          </div>
+                        }
                       </div>
                     </div>
                   </div>

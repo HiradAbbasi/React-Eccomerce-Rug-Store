@@ -84,7 +84,7 @@ body {
 .bi-chevron-up {
   color:rgba(0,0,0,.125);
   top:-23.98px;
-  right:60px;
+  right:75px;
   position: absolute;
   font-size: 1.6rem;
   padding:0;
@@ -115,6 +115,7 @@ body {
   display: flex;
   justify-content: space-between;
   width: 60%;
+  max-height: 66px;
 }
 
 .PD-img-container img {
@@ -244,4 +245,9 @@ body {
   gap:20px;
   width:100%;
   max-width:1300px;
+}
+
+.price-selected {
+  background-color: #0e8ce4 !important;
+  color:white;
 }
