@@ -14,7 +14,7 @@ const ProductDetail = (props) => {
   useEffect(() => {
     db.collection('products').doc(id).get().then(doc => {
       setProduct(doc.data());
-      setSelectedProduct({name: doc.data().name, cartImg: doc.data().images[0], id: id});
+      setSelectedProduct({name: doc.data().name, cartImg: doc.data().images[0], id: id, quantity: 1});
     }).then(() =>
       getLargeImg(0)
     )

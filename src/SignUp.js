@@ -54,9 +54,9 @@ const SignUp = (props) => {
     <section className="signIn-signUp-container">
       <div className="left-container">
         <div className="random-message-center">
-          <h1>Hello, Friend!</h1>
-          <p>Enter your details and start your journey with us</p>
-          <button onClick={redirectToSignIn}>Sign Up</button>
+          <h1>Welcome Back!</h1>
+          <p>To keep connected with us please login with your personal info</p>
+          <button onClick={redirectToSignIn}>Sign In</button>
         </div>  
       </div>
       <div className="right-container">

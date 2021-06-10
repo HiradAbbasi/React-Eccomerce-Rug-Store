@@ -3,8 +3,9 @@ import { db, auth } from "./firebase";
 import CheckoutCartItem from "./CheckoutCartItem";
 // import { db, auth } from "./firebase";
 
-const Checkout = () => {
+const Checkout = (props) => {
   const [input, setInput] = useState();
+  const promoCode = 460.69;
 
   useEffect(() => {
     db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
@@ -81,23 +82,23 @@ const Checkout = () => {
             <div className="col-md-4 order-md-2 mb-4">
               <h4 className="d-flex justify-content-between align-items-center mb-3">
                 <span className="text-muted">Your cart</span>
-                <span className="badge badge-primary badge-pill">3</span>
+                <span className="badge badge-primary badge-pill">{props.cartItems && props.cartItems.length}</span>
               </h4>
               <ul className="list-group mb-3">
                 {/* The length of the items in the cart */}
-                {['item1','item2','item3','item4'].map(item => (
-                  <CheckoutCartItem/>
+                {props.cartItems.map(item => (
+                  <CheckoutCartItem item={item}/>
                 ))}
                 <li className="list-group-item d-flex justify-content-between bg-light">
                   <div className="text-primary">
                     <h6 className="my-0">Promo code</h6>
                     <small>HIRAD</small>
                   </div>
-                  <span className="text-primary">-$420.69</span>
+                  <span className="text-primary">-${promoCode}</span>
                 </li>
                 <li className="list-group-item d-flex justify-content-between">
                   <span>Total (USD)</span>
-                  <strong>${4000- 420.69}</strong>
+                  <strong>${(props.cartItems && props.cartItems.length > 0) ? props.cartItems.map(item => item.price * item.quantity).reduce((prev, next) => prev + next) - promoCode : 0}</strong>
                 </li>
               </ul>
               <form className="card p-2">

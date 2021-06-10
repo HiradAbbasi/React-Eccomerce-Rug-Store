@@ -100,7 +100,7 @@ const App = () => {
               <ProductDetail addToCart={addToCart}/>
             </Route>
             <Route path="/checkout">
-              <Checkout />
+              <Checkout cartItems={cartItems} />
             </Route>
             <Route path="/results">
               <QueryResults />
