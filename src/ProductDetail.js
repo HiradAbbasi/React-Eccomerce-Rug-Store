@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { db } from "./firebase";
+import { auth, db } from "./firebase";
 
 const ProductDetail = (props) => {
   const { id } = useParams();
@@ -14,7 +14,7 @@ const ProductDetail = (props) => {
   useEffect(() => {
     db.collection('products').doc(id).get().then(doc => {
       setProduct(doc.data());
-      setSelectedProduct({name: doc.data().name, cartImg: doc.data().images[0], id: id});
+      setSelectedProduct({name: doc.data().name, cartImg: doc.data().images[0], id: id, quantity: 1});
     }).then(() =>
       getLargeImg(0)
     )
@@ -86,7 +86,7 @@ const ProductDetail = (props) => {
               <input type="checkbox" className="form-check-input"/>
               <label className="form-check-label">Free In-Store or Curbside Pickup</label>
             </div>
-            {(selectedProduct.name && selectedProduct.price && selectedProduct.size && selectedProduct.quantity) ?
+            {(selectedProduct.name && selectedProduct.price && selectedProduct.size && selectedProduct.quantity) && auth.currentUser ?
               <button type="submit" className="btn btn-primary btn-lg btn-block mt-3" onClick={() => props.addToCart(selectedProduct)}>ADD TO CART</button>:
               <button type="submit" className="btn btn-primary btn-lg btn-block mt-3" disabled>ADD TO CART</button>
             }

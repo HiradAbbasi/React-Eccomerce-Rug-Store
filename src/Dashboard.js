@@ -9,17 +9,19 @@ const Dashboard = () => {
   const [settingsUpdateErr, setSettingsUpdateErr] = useState(false);
 
   useEffect(() => {
-    db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
-      setInput({
-        firstName: doc.data().firstName,
-        lastName: doc.data().lastName,
-        address: doc.data().address,
-        city: doc.data().city,
-        state: doc.data().state,
-        country: doc.data().country,
-        postalCode: doc.data().postalCode,
+    if(auth.currentUser.uid) {
+      db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
+        setInput({
+          firstName: doc.data().firstName,
+          lastName: doc.data().lastName,
+          address: doc.data().address,
+          city: doc.data().city,
+          state: doc.data().state,
+          country: doc.data().country,
+          postalCode: doc.data().postalCode,
+        })
       })
-    })
+    }
   }, []);
 
   const updateField = (e) => {
