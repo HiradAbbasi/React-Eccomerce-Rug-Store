@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { auth, db } from "./firebase";
+import { AiFillHeart } from 'react-icons/ai'
 
 const ProductDetail = (props) => {
   const { id } = useParams();
+  const [wishlist, setWishlist] = useState(null);
   const [product, setProduct] = useState();
   const [selectedProduct, setSelectedProduct] = useState({});
   const [activeImg, setActiveImg] = useState('https://www.ivsauto.ca/frontend/assets/images/placeholder/inventory-full-placeholder.png');
@@ -17,7 +19,11 @@ const ProductDetail = (props) => {
       setSelectedProduct({name: doc.data().name, cartImg: doc.data().images[0], id: id, quantity: 1});
     }).then(() =>
       getLargeImg(0)
-    )      
+    )     
+    
+    db.collection('users').doc(auth.currentUser.uid).collection('wishlist').doc(id).get().then(doc => {
+      setWishlist(doc.data().wishlist || false);
+    }).catch(err => console.log(err))
   }, []);
 
   const getLargeImg = (num) => {
@@ -52,6 +58,17 @@ const ProductDetail = (props) => {
     e.persist();
     setSelectedProduct(prevInputs => ({...prevInputs, [e.target.name]: e.target.value }));
   }
+  
+  const onAddWishlist = () => {
+    setWishlist(!wishlist);
+    db.collection('users').doc(auth.currentUser.uid).collection('wishlist').doc(id).set({
+      wishlist: !wishlist,
+      productId: id,
+      name: product.name,
+      img: product.images[0],
+      price: `${Math.min(...product.prices)} - ${Math.max(...product.prices)}`,
+    })
+  }
 
   return (
     <>
@@ -77,6 +94,10 @@ const ProductDetail = (props) => {
             </ul>
             <div className="PD-cost">${`${Math.min(...product.prices)} - $${Math.max(...product.prices)}`}</div>
             <input className="PD-quantity-input form-control" name="quantity" placeholder="QTY" value={selectedProduct.quantity} onChange={updateField}/>
+            <div  className="add-to-wishlist">
+              <AiFillHeart onClick={onAddWishlist} style={{transition: 'color 500ms'}} size={30} color={wishlist ? 'red' : ''}/>
+              {wishlist ? <div onClick={onAddWishlist}>Remove from wishlist</div> : <div onClick={onAddWishlist}>Add to wishlist</div>}
+            </div>
             <h5 className="PD-shipping-options">Select product details for shipping & pickup availability.</h5>
             <div className="form-check">
               <input type="checkbox" class="form-check-input"/>

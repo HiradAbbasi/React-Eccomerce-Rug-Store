@@ -5,7 +5,7 @@ const CartItem = (props) => {
   return (
     <>
       {props.item &&
-        <Link className="list-group-item list-group-item-action flex-column align-items-start">
+        <Link to={`/product/${props.item.id}`}className="list-group-item list-group-item-action flex-column align-items-start">
           <div className="product-container w-100">
             <img style={{width:"70px"}} src={props.item.cartImg} />
             <large style={{width: "290px"}}>{props.item.name}<br/> ({props.item.size})</large>

@@ -238,10 +238,11 @@ body {
 }
 
 .all-query-results-container {
+  padding: 0 15px;
   margin: 0 auto;
   flex-wrap: wrap;
   display: flex;
-  justify-content:center;
+  justify-content: space-evenly;
   gap:20px;
   width:100%;
   max-width:1300px;
@@ -394,4 +395,119 @@ body {
 .star {
   cursor: pointer;
   transition: color 400ms;
+}
+
+.add-to-wishlist {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.add-to-wishlist div {
+  font-size: 1.2rem;
+  padding: 20px;
+}
+
+.add-to-wishlist div:hover {
+  color: #0c7ccc;
+  cursor: pointer;
+}
+
+.wishlist-container {
+  margin: 0 auto 200px auto;
+  width: 1300px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wishlist-ul {
+  margin-top: 50px;
+  width: 1000px;
+  display: flex; 
+  flex-direction: column;
+  gap:30px;
+}
+
+.wishlist-ul li {
+  height: 60px;
+  width:100%;
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+  overflow: hidden;
+}
+
+.wishlist-ul li h4 {
+  font-size:1.3rem;
+  font-weight: 400;
+  color:#252525;
+}
+
+.wishlist-ul li h5 {
+  color:#252525;
+  font-size:1rem;
+  font-weight: 400;
+}
+
+.product-card {
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid rgba(0, 0, 0, 0.308);
+  border-radius:5px;
+  padding: 5px;
+}
+
+.product-card-left {
+  /* background-color:red; */
+  width: 45%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+}
+
+.product-card-right {
+  padding: 5px;
+  width: 53%;
+}
+
+.product-card-horizontal-ul {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.product-card-horizontal-ul li {
+  border: 1px solid #b4b4b4;
+  width: fit-content;
+  padding:5px;
+  border-radius: 2px;
+  font-size: .7rem;
+}
+
+.product-card-horizontal-ul li:hover {
+  background-color: #b4b4b483;
+  cursor: pointer;
+}
+
+.product-card-view-review {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-card-star-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  padding: 10px;
 }

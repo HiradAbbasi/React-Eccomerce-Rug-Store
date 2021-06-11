@@ -10,6 +10,7 @@ import ProductDetail from "./ProductDetail";
 import Checkout from "./Checkout";
 import QueryResults from "./QueryResults";
 import CommentsAndReviews from "./CommentsAndReviews";
+import Wishlist from "./Wishlist";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(""); 
@@ -64,19 +65,7 @@ const App = () => {
   const addToCart = (item) => {
     db.collection('users').doc(auth.currentUser.uid).collection('cart').doc(item.id+item.size).set({
       ...item,
-    })
-    
-    // if( db.collection('users').doc(auth.currentUser.uid).collection('cart').doc(item.name)) {
-    //   console.log("already exists")
-    // }
-
-    // db.collection('users').doc(auth.currentUser.uid).collection('cart').doc(item.name).update({
-    //   quantity: "2",
-    // }).catch(err => {
-    //   console.log(err);
-    // })
-
-    // setCartItems(item);  
+    }) 
   }
 
   return (
@@ -86,7 +75,7 @@ const App = () => {
           <Header cartItems={cartItems}/>
           <Switch>
             <Route exact path="/">
-              {currentUser ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+              {currentUser ? <Redirect to="/results" /> : <Redirect to="/sign-in" />}
             </Route>
             <Route path="/sign-in">
               {currentUser ? <Redirect to="/results" /> : <SignIn signIn={signIn} />}
@@ -106,10 +95,13 @@ const App = () => {
               }
             </Route>
             <Route path="/checkout">
-              <Checkout cartItems={cartItems} />
+              {currentUser ? <Checkout cartItems={cartItems} />: <Redirect to="/sign-in"/>}
             </Route>
             <Route path="/results">
-              <QueryResults />
+              {currentUser ? <QueryResults /> : <Redirect to="/sign-in"/>} 
+            </Route>
+            <Route path="/wishlist">
+              {currentUser ? <Wishlist /> : <Redirect to="/sign-in"/>} 
             </Route>
             {/* <Route path="/search">
               <Search search={search} toggleFavorite={toggleFavorite} searchedShows={searchedShows} />
