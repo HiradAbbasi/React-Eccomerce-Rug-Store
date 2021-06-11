@@ -260,3 +260,138 @@ body {
   flex-direction: column;
   align-items: center;
 }
+
+.nav-pills a.nav-link {
+  padding: 9px 10px !important;
+}
+
+.reviews-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.total-reviews {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  flex-direction: column;
+}
+
+.reviews-ul {
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px
+}
+
+.reviews-ul li {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.reviews-ul h4 {
+  color: #333;
+  font-size:1rem;
+  width: 70px;
+}
+
+.reviews-ul h4:hover {
+  cursor: pointer;
+  color: #0c7ccc;
+}
+
+.total-reviews-counter {
+  margin: 30px 0;
+}
+
+.total-reviews-counter:hover {
+  color: #0c7ccc;
+  cursor: pointer;
+}
+
+.progress {
+  justify-content: flex-start;
+  width: 90%;
+  margin: 0 20px;
+  background-color: rgba(0, 0, 0, 0.109);
+}
+
+.user-reviews {
+  margin: 50px 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-review-container {
+  width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap:20px;
+}
+
+.review {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #0000002c;
+  border-radius: 10px;
+}
+
+.profile-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0e8ce4;
+  color: white;
+  width:7.2%;
+  font-size:1.5rem;
+}
+
+.star-rating-width{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin:10px;
+  width:12%;
+}
+
+.review-profile-name-comment {
+  width:80.8%;
+  color: #4f4f4f;
+  font-weight: 500;
+  padding: 10px;
+}
+
+.review-profile-name-comment h6 {
+  font-size:1rem;
+  font-weight:400;
+}
+
+.review-profile-light {
+  font-weight: 300;
+}
+
+.add-review {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 20px 0 80px 0;
+  width: 1000px;
+  border: 1px solid #0000002c;
+  padding: 20px;
+}
+
+.radio-hide {
+  display: none;
+}
+
+.star {
+  cursor: pointer;
+  transition: color 400ms;
+}

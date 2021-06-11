@@ -17,7 +17,7 @@ const ProductDetail = (props) => {
       setSelectedProduct({name: doc.data().name, cartImg: doc.data().images[0], id: id, quantity: 1});
     }).then(() =>
       getLargeImg(0)
-    )
+    )      
   }, []);
 
   const getLargeImg = (num) => {

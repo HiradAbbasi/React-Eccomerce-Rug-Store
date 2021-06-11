@@ -9,6 +9,7 @@ import Dashboard from "./Dashboard";
 import ProductDetail from "./ProductDetail";
 import Checkout from "./Checkout";
 import QueryResults from "./QueryResults";
+import CommentsAndReviews from "./CommentsAndReviews";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(""); 
@@ -97,7 +98,12 @@ const App = () => {
               {currentUser ? <Dashboard /> : <Redirect to="/sign-in"/>}
             </Route>
             <Route path="/product/:id">
-              <ProductDetail addToCart={addToCart}/>
+              {cartItems && 
+                <>
+                  <ProductDetail addToCart={addToCart}/>
+                  <CommentsAndReviews />
+                </>
+              }
             </Route>
             <Route path="/checkout">
               <Checkout cartItems={cartItems} />
