@@ -31,16 +31,17 @@ const CommentsAndReviews = () => {
 
     db.collection('products').doc(id).collection('reviews').doc().set({
       uploadDate: moment().format('LL'),
-      rating: rating,
+      rating: rating > 0 ? rating : 1,
       user: reviewUser.user,
       email: reviewUser.userEmail,
       comment: reviewUser.comment,
       itemId: id,
     })
+
     if(auth.currentUser){
       db.collection('users').doc(auth.currentUser.uid).collection('reviews').doc().set({
         uploadDate: moment().format('LL'),
-        rating: rating,
+        rating: rating > 0 ? rating : 1,
         user: reviewUser.user,
         email: reviewUser.userEmail,
         comment: reviewUser.comment,
@@ -118,7 +119,7 @@ const CommentsAndReviews = () => {
                       <h5>{review.user}<span className="review-profile-light"> - {review.uploadDate}</span></h5>
                       <h6>{review.comment}</h6>
                     </div>
-                    <ReadOnlyStarsRating rating={review.rating}/>
+                    <ReadOnlyStarsRating rating={review.rating} size={20}/>
                   </li>)
                 })}
                 <section class="add-review">

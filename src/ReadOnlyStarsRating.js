@@ -17,7 +17,7 @@ const ReadOnlyStarsRating = (props) => {
             <input type="radio" name="rating" class="radio-hide" value={props.rating}></input>
             <FaStar
               className="star" 
-              size={20} 
+              size={props.size} 
               color={ ratingValue <= props.rating ? "#ffc107" : "#495057"} 
             />
           </label>

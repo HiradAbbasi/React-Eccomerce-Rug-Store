@@ -6,7 +6,18 @@ import CartItem from "./CartItem";
 
 const Header = (props) => {
   const [showCart, setShowCart] = useState(false);
-  const [cartItems, setCartItems] = useState();
+  const [wishlist, setWishlist] = useState();
+  // const [cartItems, setCartItems] = useState();
+
+  useEffect(() => {
+    db.collection('users').doc(auth.currentUser.uid).collection('wishlist').onSnapshot(doc => {
+      let tempWishlist = [];
+      doc.forEach(wishlist => {
+        if(wishlist.data().wishlist) tempWishlist.push(wishlist.data().wishlist)
+      })
+      setWishlist(tempWishlist);
+    })
+  },[])
 
   const addQuantity = (id) => {
     db.collection('users').doc(auth.currentUser.uid).collection('cart').doc(id).get().then(doc => doc.data().quantity).then( quantity => {
@@ -175,9 +186,9 @@ const Header = (props) => {
                         </div>
                         <div className="wishlist_content">
                           <div className="wishlist_text">
-                            <a href="#">Wishlist</a>
+                            <Link to='/wishlist'>Wishlist</Link>
                           </div>
-                          <div className="wishlist_count">10</div>
+                          <div className="wishlist_count">{wishlist && wishlist.length}</div>
                         </div>
                       </div>
                       <div className="cart">

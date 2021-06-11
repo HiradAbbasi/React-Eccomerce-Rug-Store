@@ -6,6 +6,7 @@ const CartItem = (props) => {
     <>
       {props.item &&
 <<<<<<< HEAD
+<<<<<<< HEAD
         <Link className="list-group-item list-group-item-action flex-column align-items-start" to={`/product/${props.item.id}`}>
           <div className="product-container w-100">
             <img style={{width:"70px"}} src={props.item.cartImg} />
@@ -28,6 +29,11 @@ const CartItem = (props) => {
       </a>}
 =======
         <Link className="list-group-item list-group-item-action flex-column align-items-start">
+||||||| 3f41c8a
+        <Link className="list-group-item list-group-item-action flex-column align-items-start">
+=======
+        <Link to={`/product/${props.item.id}`}className="list-group-item list-group-item-action flex-column align-items-start">
+>>>>>>> cart
           <div className="product-container w-100">
             <img style={{width:"70px"}} src={props.item.cartImg} />
             <large style={{width: "290px"}}>{props.item.name}<br/> ({props.item.size})</large>
