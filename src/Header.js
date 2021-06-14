@@ -10,13 +10,15 @@ const Header = (props) => {
   // const [cartItems, setCartItems] = useState();
 
   useEffect(() => {
-    db.collection('users').doc(auth.currentUser.uid).collection('wishlist').onSnapshot(doc => {
-      let tempWishlist = [];
-      doc.forEach(wishlist => {
-        if(wishlist.data().wishlist) tempWishlist.push(wishlist.data().wishlist)
+    if(auth.currentUser) {
+      db.collection('users').doc(auth.currentUser.uid).collection('wishlist').onSnapshot(doc => {
+        let tempWishlist = [];
+        doc.forEach(wishlist => {
+          if(wishlist.data().wishlist) tempWishlist.push(wishlist.data().wishlist)
+        })
+        setWishlist(tempWishlist);
       })
-      setWishlist(tempWishlist);
-    })
+    }
   },[])
 
   const addQuantity = (id) => {
@@ -202,31 +204,6 @@ const Header = (props) => {
                               <span>{props.cartItems && props.cartItems.length}</span>
                             </div>
                           </div>
-<<<<<<< HEAD
-                          <div className="cart_content">
-                            <div className="cart_text">
-                              <Link to='/checkout'>Cart</Link>
-                            </div>
-                            <div className="cart_price">${(props.cartItems && props.cartItems.length > 0) ? props.cartItems.map(item => item.price * item.quantity).reduce((prev, next) => prev + next) : 0}</div>
-                            {showCart &&
-                            <div className="cart-dropdown"> 
-                              <i className="bi bi-chevron-up"></i>
-                              <div className="list-group">
-                                {props.cartItems.length > 0 ? props.cartItems.map((item) =>
-                                  <CartItem key={item.id+item.size} item={item} addQuantity={addQuantity} removeQuantity={removeQuantity} removeFromCart={removeFromCart}/>
-                                ) :
-                                <a href="#" className="list-group-item list-group-item-action flex-column align-items-start">
-                                  <div className="d-flex w-100" style={{justifyContent: 'center', }}>
-                                    <h5 className="mb-0" >Your shopping cart is currently empty</h5>
-                                  </div>
-                                </a>}
-                              </div>
-                            </div>}
-                          </div>
-                        </div>
-||||||| d750e7e
-                        }
-=======
                           <div className="cart_content">
                             <div className="cart_text">
                               <Link to='/checkout'>Cart</Link>
@@ -248,7 +225,6 @@ const Header = (props) => {
                             </div>}
                           </div>
                         </div>
->>>>>>> cart
                       </div>
                     </div>
                   </div>}

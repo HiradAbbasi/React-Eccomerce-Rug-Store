@@ -482,11 +482,13 @@ body {
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: 5px;
+  min-height: 60px;
 }
 
 .product-card-horizontal-ul li {
   border: 1px solid #b4b4b4;
   width: fit-content;
+  height: fit-content;
   padding:5px;
   border-radius: 2px;
   font-size: .7rem;
@@ -502,6 +504,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 40px;
 }
 
 .product-card-star-container {
@@ -510,4 +513,12 @@ body {
   align-items: center;
   width: 80px;
   padding: 10px;
+}
+
+.product-card-title {
+  font-size: 1rem;
+}
+
+.product-card-price-range {
+  font-size: .9rem;
 }

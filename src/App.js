@@ -63,6 +63,7 @@ const App = () => {
   }
 
   const addToCart = (item) => {
+    console.log(item);
     db.collection('users').doc(auth.currentUser.uid).collection('cart').doc(item.id+item.size).set({
       ...item,
     }) 
