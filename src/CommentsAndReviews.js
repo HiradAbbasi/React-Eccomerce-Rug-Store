@@ -113,14 +113,16 @@ const CommentsAndReviews = () => {
             <div class="user-reviews">
               <ul class="user-review-container">
                 {reviews && reviews.map((review,index) => {
-                  return (<li class="review" key={index}>
-                    <div className="profile-img">{review.user.match(/(\b\S)?/g).join("").match(/(^\S|\S$)?/g).join("").toUpperCase()}</div>
-                    <div className="review-profile-name-comment">
-                      <h5>{review.user}<span className="review-profile-light"> - {review.uploadDate}</span></h5>
-                      <h6>{review.comment}</h6>
-                    </div>
-                    <ReadOnlyStarsRating rating={review.rating} size={20}/>
-                  </li>)
+                  return (
+                    <li class="review" key={index}>
+                      <div className="profile-img">{review.user.match(/(\b\S)?/g).join("").match(/(^\S|\S$)?/g).join("").toUpperCase()}</div>
+                      <div className="review-profile-name-comment">
+                        <h5>{review.user}<span className="review-profile-light"> - {review.uploadDate}</span></h5>
+                        <h6>{review.comment}</h6>
+                      </div>
+                      <ReadOnlyStarsRating rating={review.rating} size={20}/>
+                    </li>
+                  )
                 })}
                 <section class="add-review">
                   <div class="form-group">

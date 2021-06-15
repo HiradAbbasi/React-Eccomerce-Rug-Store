@@ -18,7 +18,13 @@ const QueryResults = () => {
 
   return (
     <>
+      <div className="history-redirect-links"> 
+        <Link to={"/"}>Home</Link>
+        <i class="bi bi-chevron-right"></i> 
+        <Link to={"/results"}>Products</Link>
+      </div>
       <section className="all-query-results-container">
+
         {products && products.map(product =>
           <section className="product-card">
             <div className="product-card-left">
@@ -38,7 +44,8 @@ const QueryResults = () => {
                 <Link to={`/product/${product[1]}`}>
                   <button type="button" className="btn btn-primary btn-sm">ADD TO CART</button>
                 </Link>  
-                <div className="product-card-star-container"><ReadOnlyStarsRating rating={3} size={15}/></div>
+                {/* <div className="ml-3" style={{display: 'flex', alignItems: 'center'}}></div> */}
+                <div className="product-card-star-container"><ReadOnlyStarsRating rating={Math.round(product[0].averageRating)} size={15}/></div>
               </div>
             </div>
           </section>

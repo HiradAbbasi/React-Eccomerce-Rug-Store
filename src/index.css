@@ -101,14 +101,13 @@ body {
 
 .product-detail-container {
   padding: 0 15px;
-  margin: 0 auto;
+  margin: 0 auto 150px auto;
   width: 100%;
   max-width: 1300px;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-bottom: 200px;
-  height: 500px;
+  height: 580px;
 }
 
 .PD-img-container {
@@ -147,7 +146,7 @@ body {
   justify-content: space-between;
   padding: 40px;
   width: 40%;
-  height: 600px;
+  max-height: 600px;
 }
 
 .PD-title {
@@ -198,7 +197,7 @@ body {
 .PD-cost {
   font-size: 1.5rem;
   font-weight: 600;
-  margin-top: 16px;
+  margin: 5px 0;
 }
 
 .PD-quantity-input {
@@ -208,7 +207,7 @@ body {
   font-size: 14px;
   width: 70px;
   padding: 8px 20px;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
 .form-check {
@@ -218,7 +217,6 @@ body {
 
 .PD-shipping-options {
   font-size: 16px;
-  margin: 20px 0;
   line-height: 20px;
   color: #010101;
   text-transform: none;
@@ -239,7 +237,7 @@ body {
 
 .all-query-results-container {
   padding: 0 15px;
-  margin: 0 auto;
+  margin: 0 auto 100px auto;
   flex-wrap: wrap;
   display: flex;
   justify-content: space-evenly;
@@ -454,6 +452,7 @@ body {
 }
 
 .product-card {
+  transform: scale(.97);
   max-width: 400px;
   width: 100%;
   display: flex;
@@ -461,6 +460,14 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.308);
   border-radius:5px;
   padding: 5px;
+  -moz-box-shadow: 0px 4px 8px 1px #676767;
+  -webkit-box-shadow: 0px 4px 8px 1px #676767;
+  box-shadow: 0px 4px 8px 1px #676767;
+  transition: transform .2s ease-in;
+}
+
+.product-card:hover {
+  transform: scale(1);
 }
 
 .product-card-left {
@@ -521,4 +528,15 @@ body {
 
 .product-card-price-range {
   font-size: .9rem;
+}
+
+.history-redirect-links {
+  font-size: 1.2rem;
+  margin: 50px auto;
+  width: 1300px;
+  padding: 0 15px;
+}
+
+label {
+  margin: 0 0 5px 0;
 }

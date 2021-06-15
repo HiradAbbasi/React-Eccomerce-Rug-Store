@@ -36,14 +36,6 @@ const App = () => {
     return unsubscribe;
   }, []);
 
-  // useEffect(() => {
-  //   db.collection('users').doc(auth.currentUser.uid).update({
-  //     cartItems: cartItems,
-  //   }).catch(err => {
-  //     console.log(err);
-  //   })
-  // }, [cartItems]);
-
   const signIn = (email, password) => {
     return auth.signInWithEmailAndPassword(email, password);
   }
