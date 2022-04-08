@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { db, auth } from "./firebase";
 import CheckoutCartItem from "./CheckoutCartItem";
-import moment from 'moment';
+// import { db, auth } from "./firebase";
 
 const Checkout = (props) => {
   const [input, setInput] = useState();
@@ -64,12 +64,10 @@ const Checkout = (props) => {
   
   const onContinueCheckout = (e) => {
     e.preventDefault();
+    //Redirect to purchase successfull page
+    //Add purchase to purchase history
 
-    db.collection('users').doc(auth.currentUser.uid).collection('orders').doc().set({
-      orderItems: props.cartItems,
-      userDetails: input,
-      uploadDate: moment().format('LL'),
-    })
+    console.log("Successfully")
   }
 
   return (
@@ -118,17 +116,17 @@ const Checkout = (props) => {
                 <div className="row">
                   <div className="col-md-6 mb-4">
                     <label>First name</label>
-                    <input type="text" className="form-control" name="firstName" value={input.firstName || ""} onChange={updateField} required/>
+                    <input type="text" className="form-control" name="firstName" value={input.firstName || ""} required/>
                   </div>
                   <div className="col-md-6 mb-4">
                     <label>Last name</label>
-                    <input type="text" className="form-control" name="lastName" value={input.lastName || ""} onChange={updateField} required/>
+                    <input type="text" className="form-control" name="lastName" value={input.lastName || ""}required/>
                   </div>
                 </div>
 
                 <div className="mb-4">
                   <label>Email <span className="text-muted">(Optional)</span></label>
-                  <input type="email" className="form-control" name="email" value={input.email || ""} onChange={updateField} placeholder="you@example.com" />
+                  <input type="email" className="form-control" value={input.email || ""} placeholder="you@example.com"/>
                   <div className="invalid-feedback">Please enter a valid email address for shipping updates.</div>
                 </div>
 
