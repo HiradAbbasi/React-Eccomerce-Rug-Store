@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "../src/Header.css";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { auth, db } from "./firebase";
 import CartItem from "./CartItem";
 
 const Header = (props) => {
   const [showCart, setShowCart] = useState(false);
   const [wishlist, setWishlist] = useState();
+  const [search, setSearch] = useState();
+  const history = useHistory();
   // const [cartItems, setCartItems] = useState();
 
   useEffect(() => {
@@ -59,6 +61,19 @@ const Header = (props) => {
 
   const test = () => {
     setShowCart(!showCart);
+  }
+
+  const onSearch = (e) => {
+    setSearch(e.target.value);
+    e.preventDefault();
+  }
+
+  const onSubmitSearch = (e) => {
+    e.preventDefault();
+    history.push({
+      pathname: "/search",
+      search: `query=${search.toLowerCase()}`
+    })
   }
 
   return (
@@ -165,11 +180,13 @@ const Header = (props) => {
                   <div className="header_search">
                     <div className="header_search_content">
                       <div className="header_search_form_container">
-                        <form action="#" className="header_search_form clearfix">
+                        <form className="header_search_form clearfix" onSubmit={onSubmitSearch}>
                           <input
                             type="search"
                             className="header_search_input"
                             placeholder="Search for products..."
+                            value={search}
+                            onChange={onSearch}
                           />
                         </form>
                       </div>

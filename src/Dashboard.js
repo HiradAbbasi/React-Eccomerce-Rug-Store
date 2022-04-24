@@ -359,7 +359,7 @@ const Dashboard = () => {
                       <button className="btn btn-secondary" type="button" onClick={onResetAccountSettings}>Cancel</button>
                     </div>
                     <div className="mb-0">
-                      <button type="button" className="btn btn-outline-info mr-1" type="button" onClick={onVerifiyUser}>Verify Email</button>
+                      <button type="button" className="btn btn-outline-info mr-1" onClick={onVerifiyUser}>Verify Email</button>
                       <button type="button" className="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModalCenter">Delete Account</button>
                     </div>
                   </form>
@@ -531,7 +531,7 @@ const Dashboard = () => {
                   any information after that time.
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="btn btn-outline-danger" data-dismiss="modal" type="button" onClick={onDeleteUser}>Delete Account</button>
+                  <button type="button" className="btn btn-outline-danger" data-dismiss="modal" onClick={onDeleteUser}>Delete Account</button>
                   <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
               </div>
